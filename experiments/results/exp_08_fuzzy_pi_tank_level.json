@@ -1,0 +1,471 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "exp_08_fuzzy_pi_tank_level",
+  "title": "Fuzzy PI vs PI vs gain-scheduled PI on a nonlinear tank, matched tuning budget",
+  "notebook": "notebooks/05_intelligent/08_fuzzy.ipynb",
+  "algorithm": "Mamdani fuzzy PI (incremental), PI, gain-scheduled PI; Nelder-Mead tuning",
+  "application": "Tank level control (illustrative)",
+  "plant_model": "Single tank with sqrt outflow (RK4)",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated tank, illustrative parameters; Gaussian measurement noise in test B."
+  },
+  "experiment_type": "software_simulation",
+  "controller_parameters": {
+    "PI": [
+      0.004877513865589978,
+      203.52688586105396
+    ],
+    "GS-PI": [
+      0.005408144120744971,
+      200.5208804882175
+    ],
+    "Fuzzy PI": [
+      0.27255967006392123,
+      3.0396173151502164,
+      0.0016110090320342152
+    ]
+  },
+  "plant_parameters": {
+    "area_m2": 0.8,
+    "c_out": 0.004,
+    "q_max": 0.008
+  },
+  "sampling_time_s": 10.0,
+  "input_configuration": {
+    "train": [
+      1.5,
+      2.5,
+      1.0
+    ],
+    "test A": [
+      0.6,
+      3.0,
+      1.8
+    ],
+    "test B": [
+      0.6,
+      3.0,
+      1.8
+    ]
+  },
+  "disturbance_configuration": {
+    "train": {
+      "outflow_m3s": 0.0006,
+      "noise_std_m": 0.01
+    },
+    "test A": {
+      "outflow_m3s": 0.001,
+      "noise_std_m": 0.0
+    },
+    "test B": {
+      "outflow_m3s": 0.001,
+      "noise_std_m": 0.01
+    }
+  },
+  "operating_conditions": {
+    "tuning_budget_evaluations": 100,
+    "segment_s": 3000.0
+  },
+  "number_of_trials": 18,
+  "random_seed": 20261125,
+  "software_environment": {
+    "python": "3.13.18",
+    "platform": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+    "cpu_count": 2,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2",
+      "pandas": "3.0.5",
+      "control": "0.10.2"
+    }
+  },
+  "hardware_configuration": null,
+  "firmware_version": null,
+  "metrics": {
+    "table": [
+      {
+        "scenario": "train",
+        "controller": "PI",
+        "iae_total": 548.52626392787,
+        "max_overshoot_percent": 9.995743252028655,
+        "max_end_error_m": 0.0009626580664433559,
+        "total_variation_u": 0.06439889416937515,
+        "tuned_params": [
+          0.004877513865589978,
+          203.52688586105396
+        ]
+      },
+      {
+        "scenario": "train",
+        "controller": "GS-PI",
+        "iae_total": 532.8761487392569,
+        "max_overshoot_percent": 9.999835384113975,
+        "max_end_error_m": 0.001100959486263875,
+        "total_variation_u": 0.0715313909509887,
+        "tuned_params": [
+          0.005408144120744971,
+          200.5208804882175
+        ]
+      },
+      {
+        "scenario": "train",
+        "controller": "Fuzzy PI",
+        "iae_total": 630.7423553791699,
+        "max_overshoot_percent": 9.995612023402016,
+        "max_end_error_m": 0.00149259025663806,
+        "total_variation_u": 0.07946371609466825,
+        "tuned_params": [
+          0.27255967006392123,
+          3.0396173151502164,
+          0.0016110090320342152
+        ]
+      },
+      {
+        "scenario": "test A",
+        "controller": "PI",
+        "iae_total": 1101.844779802705,
+        "max_overshoot_percent": 9.130460969896337,
+        "max_end_error_m": 0.0012511193050732672,
+        "total_variation_u": 0.019731242088144647,
+        "tuned_params": [
+          0.004877513865589978,
+          203.52688586105396
+        ]
+      },
+      {
+        "scenario": "test A",
+        "controller": "GS-PI",
+        "iae_total": 1131.0365799054223,
+        "max_overshoot_percent": 8.985369499035242,
+        "max_end_error_m": 0.0031877391091619245,
+        "total_variation_u": 0.018255302108316836,
+        "tuned_params": [
+          0.005408144120744971,
+          200.5208804882175
+        ]
+      },
+      {
+        "scenario": "test A",
+        "controller": "Fuzzy PI",
+        "iae_total": 1214.6334226475642,
+        "max_overshoot_percent": 9.089524020059248,
+        "max_end_error_m": 1.3832843981820275e-05,
+        "total_variation_u": 0.01811143681425356,
+        "tuned_params": [
+          0.27255967006392123,
+          3.0396173151502164,
+          0.0016110090320342152
+        ]
+      },
+      {
+        "scenario": "test B",
+        "controller": "PI",
+        "iae_total": 1119.7203713249369,
+        "max_overshoot_percent": 9.1416700005252,
+        "max_end_error_m": 0.005768141943027771,
+        "total_variation_u": 0.06333155325302514,
+        "tuned_params": [
+          0.004877513865589978,
+          203.52688586105396
+        ]
+      },
+      {
+        "scenario": "test B",
+        "controller": "GS-PI",
+        "iae_total": 1144.5591743759624,
+        "max_overshoot_percent": 9.061763395170324,
+        "max_end_error_m": 0.004045466162745814,
+        "total_variation_u": 0.07363908709622002,
+        "tuned_params": [
+          0.005408144120744971,
+          200.5208804882175
+        ]
+      },
+      {
+        "scenario": "test B",
+        "controller": "Fuzzy PI",
+        "iae_total": 1277.25876006157,
+        "max_overshoot_percent": 10.240512731410043,
+        "max_end_error_m": 0.02958181749308464,
+        "total_variation_u": 0.07313689606081805,
+        "tuned_params": [
+          0.27255967006392123,
+          3.0396173151502164,
+          0.0016110090320342152
+        ]
+      }
+    ],
+    "plant_variants": [
+      {
+        "variant": "nominal",
+        "controller": "PI",
+        "iae_total": 1101.844779802705,
+        "max_overshoot_percent": 9.130460969896337
+      },
+      {
+        "variant": "nominal",
+        "controller": "GS-PI",
+        "iae_total": 1131.0365799054223,
+        "max_overshoot_percent": 8.985369499035242
+      },
+      {
+        "variant": "nominal",
+        "controller": "Fuzzy PI",
+        "iae_total": 1214.6334226475642,
+        "max_overshoot_percent": 9.089524020059248
+      },
+      {
+        "variant": "area x1.3",
+        "controller": "PI",
+        "iae_total": 1396.7868665573308,
+        "max_overshoot_percent": 13.480765709761663
+      },
+      {
+        "variant": "area x1.3",
+        "controller": "GS-PI",
+        "iae_total": 1415.5146013335163,
+        "max_overshoot_percent": 12.932339331547805
+      },
+      {
+        "variant": "area x1.3",
+        "controller": "Fuzzy PI",
+        "iae_total": 1484.116885696487,
+        "max_overshoot_percent": 12.961100726136209
+      },
+      {
+        "variant": "outlet x0.8",
+        "controller": "PI",
+        "iae_total": 948.1464977779656,
+        "max_overshoot_percent": 11.269441175454846
+      },
+      {
+        "variant": "outlet x0.8",
+        "controller": "GS-PI",
+        "iae_total": 980.66476831247,
+        "max_overshoot_percent": 11.003274341341795
+      },
+      {
+        "variant": "outlet x0.8",
+        "controller": "Fuzzy PI",
+        "iae_total": 1032.7720118198986,
+        "max_overshoot_percent": 10.584219024478593
+      }
+    ],
+    "repeat_tuning": [
+      {
+        "start": 0,
+        "controller": "PI",
+        "test_A": 1101.844779802705,
+        "test_B": 1119.7203713249369
+      },
+      {
+        "start": 0,
+        "controller": "GS-PI",
+        "test_A": 1131.0365799054223,
+        "test_B": 1144.5591743759624
+      },
+      {
+        "start": 0,
+        "controller": "Fuzzy PI",
+        "test_A": 1214.6334226475642,
+        "test_B": 1277.25876006157
+      },
+      {
+        "start": 1,
+        "controller": "PI",
+        "test_A": 1121.2945501510023,
+        "test_B": 1137.7307388380582
+      },
+      {
+        "start": 1,
+        "controller": "GS-PI",
+        "test_A": 1150.448529845508,
+        "test_B": 1161.8337511346083
+      },
+      {
+        "start": 1,
+        "controller": "Fuzzy PI",
+        "test_A": 1227.0725750931892,
+        "test_B": 1252.1222615741333
+      },
+      {
+        "start": 2,
+        "controller": "PI",
+        "test_A": 1101.7822079054122,
+        "test_B": 1119.651216095207
+      },
+      {
+        "start": 2,
+        "controller": "GS-PI",
+        "test_A": 1131.070853223145,
+        "test_B": 1144.593717298157
+      },
+      {
+        "start": 2,
+        "controller": "Fuzzy PI",
+        "test_A": 1225.0191679807033,
+        "test_B": 1297.5189790737863
+      },
+      {
+        "start": 3,
+        "controller": "PI",
+        "test_A": 1121.4909469591933,
+        "test_B": 1137.6523469907718
+      },
+      {
+        "start": 3,
+        "controller": "GS-PI",
+        "test_A": 1131.2482503882707,
+        "test_B": 1144.27975373332
+      },
+      {
+        "start": 3,
+        "controller": "Fuzzy PI",
+        "test_A": 1239.213064418248,
+        "test_B": 1286.275430787003
+      },
+      {
+        "start": 4,
+        "controller": "PI",
+        "test_A": 1119.5953214208005,
+        "test_B": 1136.8622402802412
+      },
+      {
+        "start": 4,
+        "controller": "GS-PI",
+        "test_A": 1150.4554137708997,
+        "test_B": 1161.5236140387055
+      },
+      {
+        "start": 4,
+        "controller": "Fuzzy PI",
+        "test_A": 1232.1971379197682,
+        "test_B": 1271.3371474355984
+      }
+    ],
+    "tuning_evaluations": {
+      "PI": 100,
+      "GS-PI": 100,
+      "Fuzzy PI": 100
+    },
+    "fuzzy_engine": {
+      "max_nonmonotone_drop": 0.01777066853649456,
+      "phi_1_1_default_grid": 0.8921782178217823,
+      "phi_1_1_fine_grid": 0.8889222177782222,
+      "closed_form": 0.8888888888888888
+    },
+    "start": {
+      "kp": 0.002,
+      "ti_s": 489.8979485566356,
+      "ge": 0.4082482904638631,
+      "gde": 20.0,
+      "gu": 7.187755102040811e-05,
+      "slope": 1.3912549687677465
+    }
+  },
+  "baseline": null,
+  "checks": [
+    {
+      "name": "membership degrees sum to 1 on [-1,1] (partition of unity)",
+      "passed": true,
+      "detail": "max deviation 6.7e-16"
+    },
+    {
+      "name": "triangular(0.25; 0, 0.5, 1) = 0.5 and 0 outside the feet",
+      "passed": true,
+      "detail": "hand values"
+    },
+    {
+      "name": "rule base is odd: Phi(-e,-de) = -Phi(e,de)",
+      "passed": true,
+      "detail": "max asymmetry 5.6e-16"
+    },
+    {
+      "name": "Phi(e, 0) is non-decreasing in e",
+      "passed": true,
+      "detail": "41 points on the de = 0 line"
+    },
+    {
+      "name": "Phi(0,0) = 0",
+      "passed": true,
+      "detail": "6.660006146521636e-18"
+    },
+    {
+      "name": "Phi(1,1) within 5e-3 of the closed-form centroid 8/9 on the default 201-point universe",
+      "passed": true,
+      "detail": "0.8922 vs 0.8889"
+    },
+    {
+      "name": "Phi(1,1) converges to 8/9 when the universe is refined to 20001 points (error < 2e-4)",
+      "passed": true,
+      "detail": "0.88892"
+    },
+    {
+      "name": "equivalent start: fuzzy and PI increments agree in the linear region (<2%)",
+      "passed": true,
+      "detail": "8.025e-06 vs 8.041e-06"
+    },
+    {
+      "name": "local plant gain from simulation follows 2 sqrt(h)/c (nonlinear gain ratio 3 m vs 0.5 m)",
+      "passed": true,
+      "detail": "ratio sim/theory [1.01 1.01 1.01 1.01]"
+    },
+    {
+      "name": "same tuning budget: every controller used 100 to 104 objective evaluations",
+      "passed": true,
+      "detail": "{'PI': 100, 'GS-PI': 100, 'Fuzzy PI': 100}"
+    },
+    {
+      "name": "PI: tuned training cost <= starting cost",
+      "passed": true,
+      "detail": "1532 -> 871"
+    },
+    {
+      "name": "GS-PI: tuned training cost <= starting cost",
+      "passed": true,
+      "detail": "1626 -> 891"
+    },
+    {
+      "name": "Fuzzy PI: tuned training cost <= starting cost",
+      "passed": true,
+      "detail": "3584 -> 1028"
+    },
+    {
+      "name": "PI: end-of-segment error below 3% of the largest step on test A (steady state reached)",
+      "passed": true,
+      "detail": "0.001 m"
+    },
+    {
+      "name": "GS-PI: end-of-segment error below 3% of the largest step on test A (steady state reached)",
+      "passed": true,
+      "detail": "0.003 m"
+    },
+    {
+      "name": "Fuzzy PI: end-of-segment error below 3% of the largest step on test A (steady state reached)",
+      "passed": true,
+      "detail": "0.000 m"
+    },
+    {
+      "name": "repeat tuning: all 15 repeat runs produced finite test costs",
+      "passed": true,
+      "detail": "15 runs"
+    }
+  ],
+  "limitations": [
+    "One plant, one rule base, one tuning algorithm; no statistical repeats over seeds for tuning.",
+    "Illustrative plant parameters; no measured data.",
+    "Local optimiser (Nelder-Mead) from a model-based start; a different start or budget could change the ranking.",
+    "GS-PI uses plant structure the other controllers do not.",
+    "No hardware validation."
+  ],
+  "result_status": "completed",
+  "figure_references": [
+    "experiments/figures/exp_08_fuzzy_pi_tank_level/responses.png",
+    "experiments/figures/exp_08_fuzzy_pi_tank_level/tuning_and_variants.png"
+  ],
+  "execution_timestamp": "2026-11-25T10:42:27+00:00",
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/05_intelligent/08_fuzzy.ipynb"
+}

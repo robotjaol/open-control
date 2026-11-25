@@ -1,0 +1,118 @@
+{
+  "experiment_id": "exp_06_dc_motor_speed_control",
+  "title": "DC motor speed control: single loop vs cascade with current limit",
+  "notebook": "notebooks/04_motor_control/06_dc_motor_speed.ipynb",
+  "notebook_id": "06_dc_motor_speed",
+  "algorithm": "Cascade PI (current inner, speed outer) vs single-loop PI",
+  "application": "Brushed DC gear motor, illustrative",
+  "plant_model": "2nd-order DC motor (RK4)",
+  "category": "Motor and drive control",
+  "difficulty": "Intermediate",
+  "roadmap_level": 3,
+  "lab": "motor",
+  "experiment_type": "software_simulation",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated motor with illustrative parameters."
+  },
+  "references": [
+    {
+      "key": "krause2013",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "ah1995",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "seborg2016",
+      "kind": "reference",
+      "status": "verified"
+    }
+  ],
+  "status": {
+    "content": "Complete (15/15 sections)",
+    "software": "Executed from a clean kernel; local unit tests passed at build time; GitHub Actions has not been run on this repository",
+    "research": "3 verified, 0 partial",
+    "simulation": "12/12 checks passed (completed)",
+    "hardware": "Not validated"
+  },
+  "figures": [
+    "experiments/figures/exp_06_dc_motor_speed_control/nominal_step_and_load.png",
+    "experiments/figures/exp_06_dc_motor_speed_control/startup_current_and_variants.png"
+  ],
+  "limitations": [
+    "Illustrative motor parameters, not identified.",
+    "No inverter, PWM, dead time or supply sag.",
+    "Ideal current sensor; quantisation modelled as a fixed speed step.",
+    "Parameter variants one at a time.",
+    "No hardware validation."
+  ],
+  "checks": [
+    {
+      "name": "open-loop step matches scipy exact step (max error / final)",
+      "passed": true,
+      "detail": "4.13e-10"
+    },
+    {
+      "name": "steady-state speed equals (Kt v - R Tl)/(RB + Kt Ke)",
+      "passed": true,
+      "detail": "133.540 vs 133.540"
+    },
+    {
+      "name": "steady-state current equals (Tl + B w)/Kt",
+      "passed": true,
+      "detail": "0.6584 vs 0.6584"
+    },
+    {
+      "name": "TF poles equal state-matrix eigenvalues",
+      "passed": true,
+      "detail": "[-573.60661056  -93.56005611]"
+    },
+    {
+      "name": "current-loop 10-90% rise time within 20% of 2.197/wc",
+      "passed": true,
+      "detail": "2.20 ms vs 2.33 ms"
+    },
+    {
+      "name": "single loop draws more than 2x the current limit on the speed step",
+      "passed": true,
+      "detail": "6.36 A vs limit 3.0 A"
+    },
+    {
+      "name": "B cascade: current stays within 10% of the limit (nominal)",
+      "passed": true,
+      "detail": "2.78 A"
+    },
+    {
+      "name": "C cascade + back-EMF ff: current stays within 10% of the limit (nominal)",
+      "passed": true,
+      "detail": "3.00 A"
+    },
+    {
+      "name": "A single-loop PI: zero steady-state error before and after load (nominal)",
+      "passed": true,
+      "detail": "0.000 %, 0.000 %"
+    },
+    {
+      "name": "B cascade: zero steady-state error before and after load (nominal)",
+      "passed": true,
+      "detail": "0.000 %, 0.000 %"
+    },
+    {
+      "name": "C cascade + back-EMF ff: zero steady-state error before and after load (nominal)",
+      "passed": true,
+      "detail": "0.000 %, 0.000 %"
+    },
+    {
+      "name": "cascade steady current equals (Tl + B w)/Kt",
+      "passed": true,
+      "detail": "0.6550 vs 0.6550 A"
+    }
+  ],
+  "execution_timestamp": "2026-11-25T10:40:27+00:00",
+  "result_file": "experiments/results/exp_06_dc_motor_speed_control.json"
+}

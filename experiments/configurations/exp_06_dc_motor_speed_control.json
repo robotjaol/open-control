@@ -1,0 +1,39 @@
+{
+  "controller_parameters": {
+    "speed_bandwidth_hz": 20.0,
+    "current_bandwidth_hz": 150.0,
+    "current_limit_A": 3.0,
+    "speed_loop_ratio": 5
+  },
+  "plant_parameters": {
+    "R": 2.0,
+    "L": 0.003,
+    "Kt": 0.08,
+    "Ke": 0.08,
+    "J": 4e-05,
+    "B": 2e-05,
+    "Tc": 0.0,
+    "v_max": 24.0
+  },
+  "sampling_time_s": 0.0002,
+  "input_configuration": {
+    "speed_step_rad_s": 120.0
+  },
+  "disturbance_configuration": {
+    "load_step_Nm": 0.05,
+    "at_s": 0.5
+  },
+  "operating_conditions": {
+    "supply_V": 24.0,
+    "encoder_quantisation_rad_s": 1.5707963267948966,
+    "variants": [
+      "nominal",
+      "inertia x3",
+      "R x1.3",
+      "Kt, Ke x0.9"
+    ]
+  },
+  "number_of_trials": 12,
+  "random_seed": null,
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/04_motor_control/06_dc_motor_speed.ipynb"
+}

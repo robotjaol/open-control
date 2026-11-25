@@ -1,0 +1,170 @@
+{
+  "experiment_id": "exp_10_pmsm_foc",
+  "title": "PMSM field-oriented control: transforms, current loops, decoupling, voltage limit",
+  "notebook": "notebooks/04_motor_control/10_pmsm_foc.ipynb",
+  "notebook_id": "10_pmsm_foc",
+  "algorithm": "Clarke/Park transforms, dq PI current control with decoupling, SVPWM (min-max), speed PI",
+  "application": "Surface-magnet PMSM servo drive (illustrative)",
+  "plant_model": "PMSM dq model, averaged inverter, RK4",
+  "category": "Motor and drive control",
+  "difficulty": "Advanced",
+  "roadmap_level": 3,
+  "lab": "motor",
+  "experiment_type": "software_simulation",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated machine, illustrative parameters."
+  },
+  "references": [
+    {
+      "key": "park1929",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "vdb1988",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "pillay1989",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "krause2013",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "ah1995",
+      "kind": "reference",
+      "status": "verified"
+    }
+  ],
+  "status": {
+    "content": "Complete (15/15 sections)",
+    "software": "Executed from a clean kernel; local unit tests passed at build time; GitHub Actions has not been run on this repository",
+    "research": "5 verified, 0 partial",
+    "simulation": "20/20 checks passed (completed)",
+    "hardware": "Not validated"
+  },
+  "figures": [
+    "experiments/figures/exp_10_pmsm_foc/speed_loop.png",
+    "experiments/figures/exp_10_pmsm_foc/decoupling_and_delay.png",
+    "experiments/figures/exp_10_pmsm_foc/voltage_limited_speed.png"
+  ],
+  "limitations": [
+    "Averaged inverter: no PWM ripple, dead time, switch drops or current-sensor error.",
+    "Surface magnets (Ld = Lq), no saturation, no iron loss, no cogging.",
+    "Ideal rotor angle and phase-current measurement.",
+    "No field weakening or MTPA.",
+    "Illustrative parameters; no measured data.",
+    "No hardware validation."
+  ],
+  "checks": [
+    {
+      "name": "balanced set of amplitude 7: |alpha,beta| = 7 and dq = (7, 0) at its own angle",
+      "passed": true,
+      "detail": "200 random angles"
+    },
+    {
+      "name": "park/inv_park and clarke/inv_clarke round trips (error < 1e-12)",
+      "passed": true,
+      "detail": "random vectors"
+    },
+    {
+      "name": "three-phase power equals 1.5 (vd id + vq iq) for zero-sequence-free sets",
+      "passed": true,
+      "detail": "max error 2.7e-15"
+    },
+    {
+      "name": "SVPWM: duties within [0,1] and the realised vector equals the request up to 0.99 Vdc/sqrt3",
+      "passed": true,
+      "detail": "max vector error 1.1e-14"
+    },
+    {
+      "name": "SVPWM shortens a request 5% above Vdc/sqrt3 (scale < 1) and keeps duties valid",
+      "passed": true,
+      "detail": "min scale 0.9524"
+    },
+    {
+      "name": "voltage utilisation: SVPWM linear limit / sinusoidal PWM limit = 2/sqrt(3)",
+      "passed": true,
+      "detail": "1.15470"
+    },
+    {
+      "name": "dq steady state equals the algebraic solution (id, iq within 0.5%)",
+      "passed": true,
+      "detail": "sim [ 4.4653 -0.61  ] vs [ 4.4625 -0.6085] A"
+    },
+    {
+      "name": "electrical power = copper loss + mechanical power at steady state (error < 0.5% of the largest term)",
+      "passed": true,
+      "detail": "2.416 = 10.663 + -8.235 W, residual -0.0123 W"
+    },
+    {
+      "name": "dq from measured phase currents equals the model state (max error < 1e-9 A)",
+      "passed": true,
+      "detail": "8.9e-16 A"
+    },
+    {
+      "name": "current-loop rise time at standstill within 25% of 2.197/wc",
+      "passed": true,
+      "detail": "1.062 ms vs 1.166 ms"
+    },
+    {
+      "name": "decoupling cuts the d-axis excursion after a 5 A iq step by at least a factor 3 (200 rad/s)",
+      "passed": true,
+      "detail": "1.138 A without, 0.322 A with"
+    },
+    {
+      "name": "speed loop: zero steady-state speed error before and after the load step (<0.2%)",
+      "passed": true,
+      "detail": "200.000, 200.000 rad/s"
+    },
+    {
+      "name": "steady iq equals (Tl + B w)/kt within 2% and id is below 0.05 A",
+      "passed": true,
+      "detail": "iq 1.1339 vs 1.1333 A, id -0.0000 A"
+    },
+    {
+      "name": "torque-producing current stays within 10% of the 10 A limit",
+      "passed": true,
+      "detail": "peak iq 9.98 A"
+    },
+    {
+      "name": "commanded voltage magnitude never exceeds the linear limit Vdc/sqrt3",
+      "passed": true,
+      "detail": "peak 22.619 V vs 27.713 V"
+    },
+    {
+      "name": "at the voltage limit the controller reports saturation",
+      "passed": true,
+      "detail": "saturated fraction 1.00"
+    },
+    {
+      "name": "steady state at the limit: the algebraic voltage of the measured (id, iq, w) equals Vdc/sqrt3 (<1%)",
+      "passed": true,
+      "detail": "27.768 V vs 27.713 V"
+    },
+    {
+      "name": "steady state at the limit: iq equals B w / kt (within 0.02 A)",
+      "passed": true,
+      "detail": "0.0617 vs 0.0605 A"
+    },
+    {
+      "name": "speed equals the voltage-limit root evaluated with the measured id (within 2%)",
+      "passed": true,
+      "detail": "544.4 vs 543.4 rad/s"
+    },
+    {
+      "name": "the limiter pushed id negative (unintended field weakening, id < -0.5 A)",
+      "passed": true,
+      "detail": "id = -1.887 A"
+    }
+  ],
+  "execution_timestamp": "2026-11-25T10:43:13+00:00",
+  "result_file": "experiments/results/exp_10_pmsm_foc.json"
+}

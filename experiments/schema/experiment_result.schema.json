@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/robotjaol/open-control/experiments/schema/experiment_result.schema.json",
+  "title": "open-control experiment result",
+  "description": "One executed experiment. Method-specific numbers go in `metrics`; the rest of the structure is fixed so tools can read every result the same way.",
+  "type": "object",
+  "required": [
+    "schema_version", "experiment_id", "title", "notebook", "algorithm", "application",
+    "plant_model", "dataset", "experiment_type", "controller_parameters", "plant_parameters",
+    "sampling_time_s", "input_configuration", "disturbance_configuration", "operating_conditions",
+    "number_of_trials", "random_seed", "software_environment", "hardware_configuration",
+    "firmware_version", "metrics", "baseline", "checks", "limitations", "result_status",
+    "figure_references", "execution_timestamp", "reproducibility_instructions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "experiment_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "title": {"type": "string", "minLength": 3},
+    "notebook": {"type": "string"},
+    "algorithm": {"type": "string"},
+    "application": {"type": "string"},
+    "plant_model": {"type": "string"},
+    "dataset": {
+      "type": "object",
+      "required": ["name", "kind", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string"},
+        "kind": {"enum": ["measured_experiment", "public_dataset", "simulated", "synthetic_illustrative", "none"]},
+        "description": {"type": "string"}
+      }
+    },
+    "experiment_type": {"enum": ["software_simulation", "controller_in_the_loop", "hardware_in_the_loop", "physical_hardware"]},
+    "controller_parameters": {"type": "object"},
+    "plant_parameters": {"type": "object"},
+    "sampling_time_s": {"type": ["number", "null"]},
+    "input_configuration": {"type": "object"},
+    "disturbance_configuration": {"type": "object"},
+    "operating_conditions": {"type": "object"},
+    "number_of_trials": {"type": "integer", "minimum": 1},
+    "random_seed": {"type": ["integer", "null"]},
+    "software_environment": {
+      "type": "object",
+      "required": ["python", "platform", "packages"],
+      "properties": {
+        "python": {"type": "string"},
+        "platform": {"type": "string"},
+        "cpu_count": {"type": ["integer", "null"]},
+        "packages": {"type": "object"}
+      }
+    },
+    "hardware_configuration": {"type": ["object", "null"]},
+    "firmware_version": {"type": ["string", "null"]},
+    "metrics": {"type": "object"},
+    "baseline": {"type": ["object", "null"]},
+    "checks": {
+      "description": "Automated comparisons against analytic or independent reference cases.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "passed", "detail"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string"},
+          "passed": {"type": "boolean"},
+          "detail": {"type": "string"}
+        }
+      }
+    },
+    "limitations": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "result_status": {"enum": ["completed", "partial", "failed"]},
+    "figure_references": {"type": "array", "items": {"type": "string"}},
+    "execution_timestamp": {"type": "string"},
+    "reproducibility_instructions": {"type": "string"}
+  }
+}

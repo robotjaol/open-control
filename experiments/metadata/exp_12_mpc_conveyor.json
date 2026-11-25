@@ -1,0 +1,135 @@
+{
+  "experiment_id": "exp_12_mpc_conveyor",
+  "title": "Linear MPC of a belt conveyor: horizon, constraints and comparison with PI",
+  "notebook": "notebooks/06_advanced_control/12_mpc.ipynb",
+  "notebook_id": "12_mpc",
+  "algorithm": "Linear MPC (condensed QP, SciPy L-BFGS-B / SLSQP), offset-free via output disturbance estimate",
+  "application": "Bench-scale belt conveyor, illustrative",
+  "plant_model": "Single-mass belt with drive-force lag (RK4), model-based MPC on the linearisation",
+  "category": "Advanced control",
+  "difficulty": "Advanced",
+  "roadmap_level": 4,
+  "lab": "motor",
+  "experiment_type": "software_simulation",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated conveyor with illustrative parameters."
+  },
+  "references": [
+    {
+      "key": "mayne2000",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "rmd2017",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "ah1995",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "skogestad2003",
+      "kind": "reference",
+      "status": "verified"
+    }
+  ],
+  "status": {
+    "content": "Complete (15/15 sections)",
+    "software": "Executed from a clean kernel; local unit tests passed at build time; GitHub Actions has not been run on this repository",
+    "research": "4 verified, 0 partial",
+    "simulation": "14/14 checks passed (completed)",
+    "hardware": "Not validated"
+  },
+  "figures": [
+    "experiments/figures/exp_12_mpc_conveyor/mpc_vs_pi_step_slew_frontier.png",
+    "experiments/figures/exp_12_mpc_conveyor/mpc_drop_and_ceiling.png"
+  ],
+  "limitations": [
+    "Illustrative plant parameters.",
+    "No terminal cost or set: no stability guarantee.",
+    "General-purpose SciPy solver; timing is for this machine only.",
+    "MPC model uses the true plant parameters (best case) except where a stale payload is stated.",
+    "PI and MPC tuned by different rules; compared on IAE against command variation.",
+    "Single input, single output, stable plant: no multivariable benefit tested.",
+    "No hardware validation."
+  ],
+  "checks": [
+    {
+      "name": "finite-horizon unconstrained first move equals the Riccati recursion (20 random states, N = 15)",
+      "passed": true,
+      "detail": "max abs diff 3.24e-09"
+    },
+    {
+      "name": "MPC first-move gain error against the LQR gain falls with horizon (N = 2, 5, 10, 20)",
+      "passed": true,
+      "detail": "1.9e-01 > 2.2e-03 > 1.9e-05 > 2.4e-09"
+    },
+    {
+      "name": "MPC first-move gain at N = 40 equals the LQR gain within 1e-6 (relative)",
+      "passed": true,
+      "detail": "2.2e-09"
+    },
+    {
+      "name": "box-constrained QP cost equals bounded least squares (BVLS) cost on 15 states, bounds active in most",
+      "passed": true,
+      "detail": "max rel diff 2.9e-15, bounds active in 14/15"
+    },
+    {
+      "name": "rate-constrained QP satisfies the KKT conditions (non-negative multipliers, relative residual < 1e-4) and its limits to 1e-6",
+      "passed": true,
+      "detail": "max relative KKT residual 1.2e-05, worst violation 3.5e-16"
+    },
+    {
+      "name": "rate-constrained QP cost is not above the trust-constr cost (interior-point, strictly feasible, stops short)",
+      "passed": true,
+      "detail": "SLSQP minus trust-constr, relative: [-1e-07, -1e-08, -7.86e-06, -2e-08, -5.38e-06]"
+    },
+    {
+      "name": "constraint-aware MPC has lower IAE than MPC that ignores the bounds (saturating step)",
+      "passed": true,
+      "detail": "0.1463 vs 0.2546"
+    },
+    {
+      "name": "closed-loop IAE changes by less than 0.1% between N = 10 and N = 40 (gain has converged by N = 10)",
+      "passed": true,
+      "detail": "0.14626 vs 0.14626"
+    },
+    {
+      "name": "slew-constrained MPC: command stays in [0, 1] and every step is within 0.05 (+1e-6)",
+      "passed": true,
+      "detail": "max step 0.050000"
+    },
+    {
+      "name": "with the slew limit, MPC has lower IAE than PI + external limiter",
+      "passed": true,
+      "detail": "0.0739 vs 0.0857"
+    },
+    {
+      "name": "MPC with a stale payload model has zero steady-state error after the drop (offset-free)",
+      "passed": true,
+      "detail": "1.76e-08 m/s"
+    },
+    {
+      "name": "MPC speed at the ceiling is within 1% of the closed-form maximum (30 kg)",
+      "passed": true,
+      "detail": "0.6904 vs 0.6911 m/s"
+    },
+    {
+      "name": "no QP solve reported failure in any closed-loop run",
+      "passed": true,
+      "detail": "0 failures"
+    },
+    {
+      "name": "mean QP solve time is below 10% of the sample time in every run (this machine, SciPy)",
+      "passed": true,
+      "detail": "worst run mean 0.63 ms against 5 ms; single slowest solve 13.4 ms (not a check: timing outliers depend on the machine)"
+    }
+  ],
+  "execution_timestamp": "2026-11-25T10:43:31+00:00",
+  "result_file": "experiments/results/exp_12_mpc_conveyor.json"
+}

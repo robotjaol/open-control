@@ -1,0 +1,137 @@
+{
+  "experiment_id": "exp_05_fsm_motor_starter",
+  "title": "Motor starter as a Moore state machine",
+  "notebook": "notebooks/03_discrete/05_fsm.ipynb",
+  "notebook_id": "05_fsm",
+  "algorithm": "Moore finite state machine with structural checks",
+  "application": "Direct-on-line motor starter sequencing (illustrative)",
+  "plant_model": "Motor feedback modelled as two fixed delays (1.5 s run, 3.0 s stop)",
+  "category": "Sequential and PLC",
+  "difficulty": "Intermediate",
+  "roadmap_level": 2,
+  "lab": "plc",
+  "experiment_type": "software_simulation",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Scripted scenarios and seeded random events."
+  },
+  "references": [
+    {
+      "key": "moore1956",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "harel1987",
+      "kind": "reference",
+      "status": "verified"
+    }
+  ],
+  "status": {
+    "content": "Complete (15/15 sections)",
+    "software": "Executed from a clean kernel; local unit tests passed at build time; GitHub Actions has not been run on this repository",
+    "research": "2 verified, 0 partial",
+    "simulation": "17/17 checks passed (completed)",
+    "hardware": "Not validated"
+  },
+  "figures": [
+    "experiments/figures/exp_05_fsm_motor_starter/state_diagram.png",
+    "experiments/figures/exp_05_fsm_motor_starter/scenarios.png"
+  ],
+  "limitations": [
+    "Idealised delay model for motor feedback; no bounce, debounce or scan jitter.",
+    "Structural checks cover the transition table only, not electrical interlocks.",
+    "Enumeration and testing, not formal model checking.",
+    "No PLC or hardware validation."
+  ],
+  "checks": [
+    {
+      "name": "intended machine: no unreachable and no deadlock states",
+      "passed": true,
+      "detail": "unreachable=[], deadlock=[]"
+    },
+    {
+      "name": "every state can reach IDLE",
+      "passed": true,
+      "detail": "cannot reach IDLE: []"
+    },
+    {
+      "name": "checker finds the planted unreachable state",
+      "passed": true,
+      "detail": "{'ORPHAN'}"
+    },
+    {
+      "name": "checker finds the planted deadlock state",
+      "passed": true,
+      "detail": "{'LATCHED'}"
+    },
+    {
+      "name": "contactor is open in IDLE, STOPPING, FAULT, ESTOP",
+      "passed": true,
+      "detail": "enumerated over all reachable states"
+    },
+    {
+      "name": "estop leads to ESTOP from every other state in one step",
+      "passed": true,
+      "detail": "enumerated over all states"
+    },
+    {
+      "name": "ESTOP exits only to FAULT (no automatic restart)",
+      "passed": true,
+      "detail": "{'FAULT'}"
+    },
+    {
+      "name": "contactor-closed states entered only by start from IDLE and run_fb from STARTING",
+      "passed": true,
+      "detail": "{('IDLE', 'start')}, {('STARTING', 'run_fb')}"
+    },
+    {
+      "name": "FSM equals the if/elif reference on 20 000 random events",
+      "passed": true,
+      "detail": "mismatches=0, dropped fsm=16451, ref=16451"
+    },
+    {
+      "name": "scenario A normal run: state sequence, entry times and dropped events as derived",
+      "passed": true,
+      "detail": "got [(0.0, 'IDLE'), (1.0, 'STARTING'), (2.5, 'RUNNING'), (10.0, 'STOPPING'), (13.0, 'IDLE')], dropped []"
+    },
+    {
+      "name": "scenario A normal run: contactor never closed in FAULT or ESTOP",
+      "passed": true,
+      "detail": "violations at []"
+    },
+    {
+      "name": "scenario B start failure: state sequence, entry times and dropped events as derived",
+      "passed": true,
+      "detail": "got [(0.0, 'IDLE'), (1.0, 'STARTING'), (6.0, 'FAULT'), (20.0, 'IDLE')], dropped []"
+    },
+    {
+      "name": "scenario B start failure: contactor never closed in FAULT or ESTOP",
+      "passed": true,
+      "detail": "violations at []"
+    },
+    {
+      "name": "scenario C overload: state sequence, entry times and dropped events as derived",
+      "passed": true,
+      "detail": "got [(0.0, 'IDLE'), (1.0, 'STARTING'), (2.5, 'RUNNING'), (8.0, 'FAULT'), (12.0, 'IDLE')], dropped [(9.0, 'FAULT', 'start')]"
+    },
+    {
+      "name": "scenario C overload: contactor never closed in FAULT or ESTOP",
+      "passed": true,
+      "detail": "violations at []"
+    },
+    {
+      "name": "scenario D emergency stop: state sequence, entry times and dropped events as derived",
+      "passed": true,
+      "detail": "got [(0.0, 'IDLE'), (1.0, 'STARTING'), (2.5, 'RUNNING'), (6.0, 'ESTOP'), (9.0, 'FAULT'), (12.0, 'IDLE')], dropped [(7.0, 'ESTOP', 'start'), (10.0, 'FAULT', 'start')]"
+    },
+    {
+      "name": "scenario D emergency stop: contactor never closed in FAULT or ESTOP",
+      "passed": true,
+      "detail": "violations at []"
+    }
+  ],
+  "execution_timestamp": "2026-11-25T10:40:17+00:00",
+  "result_file": "experiments/results/exp_05_fsm_motor_starter.json"
+}

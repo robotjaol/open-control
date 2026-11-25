@@ -1,0 +1,482 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "exp_12_mpc_conveyor",
+  "title": "Linear MPC of a belt conveyor: horizon, constraints and comparison with PI",
+  "notebook": "notebooks/06_advanced_control/12_mpc.ipynb",
+  "algorithm": "Linear MPC (condensed QP, SciPy L-BFGS-B / SLSQP), offset-free via output disturbance estimate",
+  "application": "Bench-scale belt conveyor, illustrative",
+  "plant_model": "Single-mass belt with drive-force lag (RK4), model-based MPC on the linearisation",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated conveyor with illustrative parameters."
+  },
+  "experiment_type": "software_simulation",
+  "controller_parameters": {
+    "mpc": {
+      "N": 20,
+      "Q": 1.0,
+      "R": 0.01,
+      "u_limits": [
+        0.0,
+        1.0
+      ],
+      "slew_per_sample": 0.05
+    },
+    "pi": {
+      "tau_c_s": 0.2
+    }
+  },
+  "plant_parameters": {
+    "m_belt": 12.0,
+    "c": 40.0,
+    "mu": 0.03,
+    "F_max": 40.0,
+    "tau_t": 0.05,
+    "eps": 0.01
+  },
+  "sampling_time_s": 0.05,
+  "input_configuration": {
+    "operating_speed_m_s": 0.5,
+    "steps": [
+      0.85,
+      0.7
+    ]
+  },
+  "disturbance_configuration": {
+    "item_drop_kg": 15.0,
+    "at_s": 1.0,
+    "initial_payload_kg": 5.0
+  },
+  "operating_conditions": {
+    "solver": "SciPy L-BFGS-B / SLSQP",
+    "ideal_load_cell_for_pi": true
+  },
+  "number_of_trials": 29,
+  "random_seed": 12,
+  "software_environment": {
+    "python": "3.13.18",
+    "platform": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+    "cpu_count": 2,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2",
+      "pandas": "3.0.5",
+      "control": "0.10.2"
+    }
+  },
+  "hardware_configuration": null,
+  "firmware_version": null,
+  "metrics": {
+    "gain_error_vs_lqr": {
+      "2": 0.18926676493168204,
+      "5": 0.002244653905946699,
+      "10": 1.8501212025895326e-05,
+      "20": 2.441074303455107e-09,
+      "40": 2.193047931231818e-09
+    },
+    "step_to_ceiling": [
+      {
+        "controller": "PI scheduled",
+        "overshoot_pct": 0.0,
+        "rise_s": 0.7511709900060849,
+        "settling_s": 1.35,
+        "iae": 0.151597425771153,
+        "requested_cmd_max": 1.0,
+        "solve_ms_mean": 0.0,
+        "solve_ms_max": 0.0,
+        "qp_failures": 0
+      },
+      {
+        "controller": "MPC N=20, constrained",
+        "overshoot_pct": 0.128253250638366,
+        "rise_s": 0.7508499703622417,
+        "settling_s": 1.1,
+        "iae": 0.146262417395359,
+        "requested_cmd_max": 1.0,
+        "solve_ms_mean": 0.38447042499498707,
+        "solve_ms_max": 1.6225910000002841,
+        "qp_failures": 0
+      },
+      {
+        "controller": "MPC N=20, bounds ignored in QP",
+        "overshoot_pct": 7.132590446694653,
+        "rise_s": 0.7508499703622417,
+        "settling_s": 6.15,
+        "iae": 0.2546174908384484,
+        "requested_cmd_max": 2.470551379256419,
+        "solve_ms_mean": 0.06391631875288795,
+        "solve_ms_max": 0.20943899994563253,
+        "qp_failures": 0
+      }
+    ],
+    "horizon_sweep": [
+      {
+        "N": 2,
+        "horizon_s": 0.1,
+        "iae": 0.14631766790419118,
+        "solve_ms_mean": 0.34284016249941374,
+        "solve_ms_max": 0.7320570000501903,
+        "qp_failures": 0
+      },
+      {
+        "N": 5,
+        "horizon_s": 0.25,
+        "iae": 0.14626515073585164,
+        "solve_ms_mean": 0.3535618562480636,
+        "solve_ms_max": 1.5886490000411868,
+        "qp_failures": 0
+      },
+      {
+        "N": 10,
+        "horizon_s": 0.5,
+        "iae": 0.14626240043514638,
+        "solve_ms_mean": 0.3032421625015047,
+        "solve_ms_max": 0.5829570000059903,
+        "qp_failures": 0
+      },
+      {
+        "N": 20,
+        "horizon_s": 1.0,
+        "iae": 0.146262417395359,
+        "solve_ms_mean": 0.32894213749727896,
+        "solve_ms_max": 0.6268710000085775,
+        "qp_failures": 0
+      },
+      {
+        "N": 40,
+        "horizon_s": 2.0,
+        "iae": 0.14626237224327435,
+        "solve_ms_mean": 0.417361043751896,
+        "solve_ms_max": 1.095916000053876,
+        "qp_failures": 0
+      }
+    ],
+    "horizon_sweep_slew": [
+      {
+        "N": 2,
+        "horizon_s": 0.1,
+        "iae": 0.07651765986939078,
+        "overshoot_pct": 8.671417432134177,
+        "settling_s": 0.8500000000000001,
+        "solve_ms_mean": 0.29160725000920706,
+        "solve_ms_max": 0.5804360000638553,
+        "qp_failures": 0
+      },
+      {
+        "N": 5,
+        "horizon_s": 0.25,
+        "iae": 0.07395053883474313,
+        "overshoot_pct": 2.0641940801239267,
+        "settling_s": 0.7000000000000002,
+        "solve_ms_mean": 0.33082415625997896,
+        "solve_ms_max": 1.2526569998954074,
+        "qp_failures": 0
+      },
+      {
+        "N": 10,
+        "horizon_s": 0.5,
+        "iae": 0.07390359437241463,
+        "overshoot_pct": 1.9205795729978492,
+        "settling_s": 0.6000000000000001,
+        "solve_ms_mean": 0.3755394374955756,
+        "solve_ms_max": 1.6845650000050227,
+        "qp_failures": 0
+      },
+      {
+        "N": 20,
+        "horizon_s": 1.0,
+        "iae": 0.07390211797981525,
+        "overshoot_pct": 1.918691457112609,
+        "settling_s": 0.6000000000000001,
+        "solve_ms_mean": 0.4410906437449569,
+        "solve_ms_max": 6.1532060000217825,
+        "qp_failures": 0
+      },
+      {
+        "N": 40,
+        "horizon_s": 2.0,
+        "iae": 0.0739015475729503,
+        "overshoot_pct": 1.918917595411851,
+        "settling_s": 0.6000000000000001,
+        "solve_ms_mean": 0.6273394125017262,
+        "solve_ms_max": 13.421398999980738,
+        "qp_failures": 0
+      }
+    ],
+    "slew_step": [
+      {
+        "controller": "PI + external rate limiter",
+        "overshoot_pct": 7.61008580801199,
+        "rise_s": 0.37107445823214225,
+        "settling_s": 1.6500000000000004,
+        "iae": 0.08571138606353482,
+        "max_step_du": 0.050000000000000044,
+        "solve_ms_mean": 0.0,
+        "solve_ms_max": 0.0,
+        "qp_failures": 0
+      },
+      {
+        "controller": "MPC with slew constraint",
+        "overshoot_pct": 1.918691457112609,
+        "rise_s": 0.3618966822190557,
+        "settling_s": 0.6000000000000001,
+        "iae": 0.07390211797981525,
+        "max_step_du": 0.050000000000000044,
+        "solve_ms_mean": 0.42317132500002685,
+        "solve_ms_max": 6.073191999917071,
+        "qp_failures": 0
+      },
+      {
+        "controller": "PI, no slew limit",
+        "overshoot_pct": 0.0,
+        "rise_s": 0.4039112271511066,
+        "settling_s": 0.9000000000000001,
+        "iae": 0.05361754122307506,
+        "max_step_du": 0.36569768441926676,
+        "solve_ms_mean": 0.0,
+        "solve_ms_max": 0.0,
+        "qp_failures": 0
+      },
+      {
+        "controller": "MPC, no slew limit",
+        "overshoot_pct": 1.2660073347440903,
+        "rise_s": 0.2782392619207085,
+        "settling_s": 0.40000000000000013,
+        "iae": 0.04337263059454573,
+        "max_step_du": 0.37496521250000003,
+        "solve_ms_mean": 0.34273127499986344,
+        "solve_ms_max": 1.091144000042732,
+        "qp_failures": 0
+      }
+    ],
+    "tuning_frontier": [
+      {
+        "controller": "PI",
+        "setting": "tau_c=0.05",
+        "iae": 0.04534894180861386,
+        "tv": 0.6151767227271309,
+        "peak_step": 0.37496521250000003
+      },
+      {
+        "controller": "PI",
+        "setting": "tau_c=0.1",
+        "iae": 0.04577450014458695,
+        "tv": 0.5688899972182464,
+        "peak_step": 0.37496521250000003
+      },
+      {
+        "controller": "PI",
+        "setting": "tau_c=0.2",
+        "iae": 0.05361702495298884,
+        "tv": 0.5505396517037062,
+        "peak_step": 0.36569768441926676
+      },
+      {
+        "controller": "PI",
+        "setting": "tau_c=0.4",
+        "iae": 0.09363355417377775,
+        "tv": 0.25006616738286136,
+        "peak_step": 0.20935983331127161
+      },
+      {
+        "controller": "PI",
+        "setting": "tau_c=0.8",
+        "iae": 0.1731719222680975,
+        "tv": 0.19971315036363368,
+        "peak_step": 0.11286174805896565
+      },
+      {
+        "controller": "MPC",
+        "setting": "R=0.0001",
+        "iae": 0.04284359064877219,
+        "tv": 0.6715540441952113,
+        "peak_step": 0.37496521250000003
+      },
+      {
+        "controller": "MPC",
+        "setting": "R=0.001",
+        "iae": 0.042983386508728814,
+        "tv": 0.6665510100159792,
+        "peak_step": 0.37496521250000003
+      },
+      {
+        "controller": "MPC",
+        "setting": "R=0.01",
+        "iae": 0.04337262275763129,
+        "tv": 0.5974708670278587,
+        "peak_step": 0.37496521250000003
+      },
+      {
+        "controller": "MPC",
+        "setting": "R=0.1",
+        "iae": 0.04434966835653457,
+        "tv": 0.5750493086973291,
+        "peak_step": 0.37496521250000003
+      },
+      {
+        "controller": "MPC",
+        "setting": "R=1",
+        "iae": 0.05702672158713574,
+        "tv": 0.5217272618702454,
+        "peak_step": 0.16599170232384752
+      }
+    ],
+    "frontier_dominance": {
+      "mpc_points_dominated_by_pi": 0,
+      "pi_points_dominated_by_mpc": 1
+    },
+    "item_drop": [
+      {
+        "controller": "PI scheduled",
+        "dip": 0.22685917908196335,
+        "recovery_s": 0.5,
+        "iae_after": 0.07786976245676054,
+        "ess": 1.2606500788825414e-05,
+        "qp_failures": 0
+      },
+      {
+        "controller": "MPC, model 5 kg (stale)",
+        "dip": 0.22685917908196335,
+        "recovery_s": 0.5,
+        "iae_after": 0.08001912669139574,
+        "ess": 1.757531786772404e-08,
+        "qp_failures": 0
+      },
+      {
+        "controller": "MPC, model 20 kg (correct)",
+        "dip": 0.22387845823614122,
+        "recovery_s": 0.5,
+        "iae_after": 0.07428793767933484,
+        "ess": 4.869600715662337e-06,
+        "qp_failures": 0
+      }
+    ],
+    "unreachable_reference": [
+      {
+        "controller": "PI back-calculation",
+        "speed_before": 0.6903964180570292,
+        "recovery_s": 0.5,
+        "min_after": 0.3995764822758071,
+        "iae_after": 0.07243960394177615,
+        "qp_failures": 0
+      },
+      {
+        "controller": "PI no anti-windup",
+        "speed_before": 0.6903964180570292,
+        "recovery_s": 4.9,
+        "min_after": 0.40021514390969914,
+        "iae_after": 0.8866327095773507,
+        "qp_failures": 0
+      },
+      {
+        "controller": "MPC, model 30 kg",
+        "speed_before": 0.6903964180570292,
+        "recovery_s": 0.35000000000000003,
+        "min_after": 0.39373321652580273,
+        "iae_after": 0.06505368270463892,
+        "qp_failures": 0
+      },
+      {
+        "controller": "MPC, model 5 kg (stale)",
+        "speed_before": 0.6903964180570292,
+        "recovery_s": 1.2000000000000002,
+        "min_after": 0.3611995721069309,
+        "iae_after": 0.09261307549239546,
+        "qp_failures": 0
+      }
+    ],
+    "worst_qp_ms": 13.421398999980738,
+    "worst_run_mean_qp_ms": 0.6273394125017262
+  },
+  "baseline": null,
+  "checks": [
+    {
+      "name": "finite-horizon unconstrained first move equals the Riccati recursion (20 random states, N = 15)",
+      "passed": true,
+      "detail": "max abs diff 3.24e-09"
+    },
+    {
+      "name": "MPC first-move gain error against the LQR gain falls with horizon (N = 2, 5, 10, 20)",
+      "passed": true,
+      "detail": "1.9e-01 > 2.2e-03 > 1.9e-05 > 2.4e-09"
+    },
+    {
+      "name": "MPC first-move gain at N = 40 equals the LQR gain within 1e-6 (relative)",
+      "passed": true,
+      "detail": "2.2e-09"
+    },
+    {
+      "name": "box-constrained QP cost equals bounded least squares (BVLS) cost on 15 states, bounds active in most",
+      "passed": true,
+      "detail": "max rel diff 2.9e-15, bounds active in 14/15"
+    },
+    {
+      "name": "rate-constrained QP satisfies the KKT conditions (non-negative multipliers, relative residual < 1e-4) and its limits to 1e-6",
+      "passed": true,
+      "detail": "max relative KKT residual 1.2e-05, worst violation 3.5e-16"
+    },
+    {
+      "name": "rate-constrained QP cost is not above the trust-constr cost (interior-point, strictly feasible, stops short)",
+      "passed": true,
+      "detail": "SLSQP minus trust-constr, relative: [-1e-07, -1e-08, -7.86e-06, -2e-08, -5.38e-06]"
+    },
+    {
+      "name": "constraint-aware MPC has lower IAE than MPC that ignores the bounds (saturating step)",
+      "passed": true,
+      "detail": "0.1463 vs 0.2546"
+    },
+    {
+      "name": "closed-loop IAE changes by less than 0.1% between N = 10 and N = 40 (gain has converged by N = 10)",
+      "passed": true,
+      "detail": "0.14626 vs 0.14626"
+    },
+    {
+      "name": "slew-constrained MPC: command stays in [0, 1] and every step is within 0.05 (+1e-6)",
+      "passed": true,
+      "detail": "max step 0.050000"
+    },
+    {
+      "name": "with the slew limit, MPC has lower IAE than PI + external limiter",
+      "passed": true,
+      "detail": "0.0739 vs 0.0857"
+    },
+    {
+      "name": "MPC with a stale payload model has zero steady-state error after the drop (offset-free)",
+      "passed": true,
+      "detail": "1.76e-08 m/s"
+    },
+    {
+      "name": "MPC speed at the ceiling is within 1% of the closed-form maximum (30 kg)",
+      "passed": true,
+      "detail": "0.6904 vs 0.6911 m/s"
+    },
+    {
+      "name": "no QP solve reported failure in any closed-loop run",
+      "passed": true,
+      "detail": "0 failures"
+    },
+    {
+      "name": "mean QP solve time is below 10% of the sample time in every run (this machine, SciPy)",
+      "passed": true,
+      "detail": "worst run mean 0.63 ms against 5 ms; single slowest solve 13.4 ms (not a check: timing outliers depend on the machine)"
+    }
+  ],
+  "limitations": [
+    "Illustrative plant parameters.",
+    "No terminal cost or set: no stability guarantee.",
+    "General-purpose SciPy solver; timing is for this machine only.",
+    "MPC model uses the true plant parameters (best case) except where a stale payload is stated.",
+    "PI and MPC tuned by different rules; compared on IAE against command variation.",
+    "Single input, single output, stable plant: no multivariable benefit tested.",
+    "No hardware validation."
+  ],
+  "result_status": "completed",
+  "figure_references": [
+    "experiments/figures/exp_12_mpc_conveyor/mpc_vs_pi_step_slew_frontier.png",
+    "experiments/figures/exp_12_mpc_conveyor/mpc_drop_and_ceiling.png"
+  ],
+  "execution_timestamp": "2026-11-25T10:43:31+00:00",
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/06_advanced_control/12_mpc.ipynb"
+}

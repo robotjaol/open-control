@@ -1,0 +1,48 @@
+{
+  "controller_parameters": {
+    "tau_c_s": 0.2,
+    "identified": {
+      "K": 1.0007516073257319,
+      "T": 0.31067149008692163,
+      "L": 0.04283129804701234
+    },
+    "output_limits": [
+      0.0,
+      1.0
+    ]
+  },
+  "plant_parameters": {
+    "m_belt": 12.0,
+    "c": 40.0,
+    "mu": 0.03,
+    "F_max": 40.0,
+    "tau_t": 0.05,
+    "eps": 0.01
+  },
+  "sampling_time_s": 0.01,
+  "input_configuration": {
+    "speed_reference_m_s": 0.5,
+    "payloads_kg": [
+      0.0,
+      10.0,
+      30.0
+    ]
+  },
+  "disturbance_configuration": {
+    "item_drop_kg": 15.0,
+    "initial_payload_kg": 5.0,
+    "at_s": 6.0
+  },
+  "operating_conditions": {
+    "encoder_diameter_m": 0.08,
+    "encoder_ppr": [
+      100,
+      400,
+      1600
+    ],
+    "ideal_load_cell": true
+  },
+  "number_of_trials": 25,
+  "random_seed": null,
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/04_motor_control/11_conveyor_speed.ipynb"
+}

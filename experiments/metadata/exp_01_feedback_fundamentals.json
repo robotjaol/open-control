@@ -1,0 +1,135 @@
+{
+  "experiment_id": "exp_01_feedback_fundamentals",
+  "title": "Feedback fundamentals on a first-order plant",
+  "notebook": "notebooks/01_fundamentals/01_control_fundamentals.ipynb",
+  "notebook_id": "01_control_fundamentals",
+  "algorithm": "Proportional feedback",
+  "application": "Generic process loop (illustrative)",
+  "plant_model": "FOPDT K=2, T=10 s, L varied",
+  "category": "Fundamentals",
+  "difficulty": "Beginner",
+  "roadmap_level": 1,
+  "lab": "process",
+  "experiment_type": "software_simulation",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated plant with illustrative parameters."
+  },
+  "references": [
+    {
+      "key": "am2021",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "ah1995",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "seborg2016",
+      "kind": "reference",
+      "status": "verified"
+    }
+  ],
+  "status": {
+    "content": "Complete (15/15 sections)",
+    "software": "Executed from a clean kernel; local unit tests passed at build time; GitHub Actions has not been run on this repository",
+    "research": "3 verified, 0 partial",
+    "simulation": "16/16 checks passed (completed)",
+    "hardware": "Not validated"
+  },
+  "figures": [
+    "experiments/figures/exp_01_feedback_fundamentals/feedback_fundamentals.png"
+  ],
+  "limitations": [
+    "Linear, noise-free, unsaturated simulation.",
+    "Delay rounded to whole samples.",
+    "No hardware or controller-in-the-loop validation."
+  ],
+  "checks": [
+    {
+      "name": "steady-state error Kc=0.5",
+      "passed": true,
+      "detail": "sim 0.5000 vs theory 0.5000"
+    },
+    {
+      "name": "closed-loop time constant Kc=0.5",
+      "passed": true,
+      "detail": "sim 5.00 s vs theory 5.00 s (sample = 0.1 s)"
+    },
+    {
+      "name": "steady-state error Kc=1.0",
+      "passed": true,
+      "detail": "sim 0.3333 vs theory 0.3333"
+    },
+    {
+      "name": "closed-loop time constant Kc=1.0",
+      "passed": true,
+      "detail": "sim 3.30 s vs theory 3.33 s (sample = 0.1 s)"
+    },
+    {
+      "name": "steady-state error Kc=2.0",
+      "passed": true,
+      "detail": "sim 0.2000 vs theory 0.2000"
+    },
+    {
+      "name": "closed-loop time constant Kc=2.0",
+      "passed": true,
+      "detail": "sim 2.00 s vs theory 2.00 s (sample = 0.1 s)"
+    },
+    {
+      "name": "steady-state error Kc=5.0",
+      "passed": true,
+      "detail": "sim 0.0909 vs theory 0.0909"
+    },
+    {
+      "name": "closed-loop time constant Kc=5.0",
+      "passed": true,
+      "detail": "sim 0.90 s vs theory 0.91 s (sample = 0.1 s)"
+    },
+    {
+      "name": "open-loop disturbance gain",
+      "passed": true,
+      "detail": "1.0000"
+    },
+    {
+      "name": "closed-loop disturbance attenuation",
+      "passed": true,
+      "detail": "0.2000"
+    },
+    {
+      "name": "stability prediction L=1.0",
+      "passed": true,
+      "detail": "Ku=8.18, Kc=3.0; simulated growth=False"
+    },
+    {
+      "name": "stability prediction L=2.0",
+      "passed": true,
+      "detail": "Ku=4.25, Kc=3.0; simulated growth=False"
+    },
+    {
+      "name": "stability prediction L=5.0",
+      "passed": true,
+      "detail": "Ku=1.90, Kc=3.0; simulated growth=True"
+    },
+    {
+      "name": "stability prediction L=8.0",
+      "passed": true,
+      "detail": "Ku=1.32, Kc=3.0; simulated growth=True"
+    },
+    {
+      "name": "closed-loop output change for dK=-0.2",
+      "passed": true,
+      "detail": "sim -0.0476 vs exact -0.0476; first-order S*dK = -0.0400; open loop = -0.2000"
+    },
+    {
+      "name": "closed-loop output change for dK=+0.2",
+      "passed": true,
+      "detail": "sim 0.0345 vs exact 0.0345; first-order S*dK = 0.0400; open loop = +0.2000"
+    }
+  ],
+  "execution_timestamp": "2026-11-25T10:40:04+00:00",
+  "result_file": "experiments/results/exp_01_feedback_fundamentals.json"
+}

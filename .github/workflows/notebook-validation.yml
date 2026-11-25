@@ -1,0 +1,30 @@
+name: notebook-validation
+on:
+  pull_request:
+    paths: ["notebooks/**", "tools/**", "src/**", "experiments/**"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13", cache: pip }
+      - run: pip install -e ".[development]"
+      - name: Execute every notebook from a clean kernel
+        run: python tools/run_notebooks.py
+      - name: Result files, catalog and links
+        run: |
+          python scripts/validate_results.py
+          python scripts/validate_catalog.py
+          python scripts/check_links.py
+      - name: Generators run on the fresh results
+        run: |
+          python tools/build_experiment_index.py
+          python tools/build_research.py
+          python tools/build_catalog.py
+          python tools/build_docs.py
+          python scripts/validate_catalog.py

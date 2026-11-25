@@ -1,0 +1,25 @@
+{
+  "controller_parameters": {
+    "count_preset": 6,
+    "settle_s": 1.0,
+    "pack_s": 2.0,
+    "latch": "reset dominant"
+  },
+  "plant_parameters": {},
+  "sampling_time_s": 0.01,
+  "input_configuration": {
+    "pulse_width_s": 0.05
+  },
+  "disturbance_configuration": {
+    "estop_scan_range": [
+      850,
+      900
+    ]
+  },
+  "operating_conditions": {
+    "reference_scan_time_s": 0.01
+  },
+  "number_of_trials": 1600,
+  "random_seed": 20261125,
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/03_discrete/07_plc_sequence.ipynb"
+}

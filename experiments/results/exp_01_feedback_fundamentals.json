@@ -1,0 +1,239 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "exp_01_feedback_fundamentals",
+  "title": "Feedback fundamentals on a first-order plant",
+  "notebook": "notebooks/01_fundamentals/01_control_fundamentals.ipynb",
+  "algorithm": "Proportional feedback",
+  "application": "Generic process loop (illustrative)",
+  "plant_model": "FOPDT K=2, T=10 s, L varied",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated plant with illustrative parameters."
+  },
+  "experiment_type": "software_simulation",
+  "controller_parameters": {
+    "Kc": [
+      0.5,
+      1.0,
+      2.0,
+      5.0,
+      3.0
+    ]
+  },
+  "plant_parameters": {
+    "K": 2.0,
+    "T_s": 10.0,
+    "L_s": [
+      0,
+      1,
+      2,
+      5,
+      8
+    ]
+  },
+  "sampling_time_s": 0.1,
+  "input_configuration": {
+    "setpoint_step": 1.0
+  },
+  "disturbance_configuration": {
+    "input_step": 0.5
+  },
+  "operating_conditions": {
+    "noise": "none",
+    "saturation": "none"
+  },
+  "number_of_trials": 1,
+  "random_seed": null,
+  "software_environment": {
+    "python": "3.13.18",
+    "platform": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+    "cpu_count": 2,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2",
+      "pandas": "3.0.5",
+      "control": "0.10.2"
+    }
+  },
+  "hardware_configuration": null,
+  "firmware_version": null,
+  "metrics": {
+    "setpoint_step": {
+      "0.5": {
+        "e_ss_sim": 0.5000000000000028,
+        "e_ss_theory": 0.5,
+        "tau_cl_sim": 5.0,
+        "tau_cl_theory": 5.0
+      },
+      "1.0": {
+        "e_ss_sim": 0.33333333333333603,
+        "e_ss_theory": 0.3333333333333333,
+        "tau_cl_sim": 3.3000000000000003,
+        "tau_cl_theory": 3.3333333333333335
+      },
+      "2.0": {
+        "e_ss_sim": 0.20000000000000018,
+        "e_ss_theory": 0.2,
+        "tau_cl_sim": 2.0,
+        "tau_cl_theory": 2.0
+      },
+      "5.0": {
+        "e_ss_sim": 0.09090909090909105,
+        "e_ss_theory": 0.09090909090909091,
+        "tau_cl_sim": 0.9,
+        "tau_cl_theory": 0.9090909090909091
+      }
+    },
+    "disturbance": {
+      "open_loop_y_ss": 0.9999999979388462,
+      "closed_loop_y_ss": 0.19999999999999996,
+      "theory_open": 1.0,
+      "theory_closed": 0.2
+    },
+    "delay_stability": {
+      "1.0": {
+        "Ku": 8.175276962982906,
+        "Pu": 3.8500039077352155,
+        "gain_margin": 2.725092320994302,
+        "predicted_unstable": false,
+        "simulated_growing": false
+      },
+      "2.0": {
+        "Ku": 4.251212494222514,
+        "Pu": 7.441522726018001,
+        "gain_margin": 1.4170708314075047,
+        "predicted_unstable": false,
+        "simulated_growing": false
+      },
+      "5.0": {
+        "Ku": 1.903441432412936,
+        "Pu": 17.105507120439487,
+        "gain_margin": 0.6344804774709787,
+        "predicted_unstable": true,
+        "simulated_growing": true
+      },
+      "8.0": {
+        "Ku": 1.3222871573978567,
+        "Pu": 25.664317046457583,
+        "gain_margin": 0.44076238579928556,
+        "predicted_unstable": true,
+        "simulated_growing": true
+      }
+    },
+    "gain_sensitivity": {
+      "relative_output_change_sim": {
+        "-0.2": -0.047619047619048296,
+        "0.2": 0.03448275862068848
+      },
+      "relative_output_change_exact_formula": {
+        "-0.2": -0.04761904761904767,
+        "0.2": 0.0344827586206895
+      },
+      "first_order_estimate_S_times_dK": {
+        "-0.2": -0.04000000000000001,
+        "0.2": 0.04000000000000001
+      },
+      "S_theory": 0.2,
+      "open_loop_relative_change": {
+        "-0.2": -0.2,
+        "0.2": 0.2
+      }
+    }
+  },
+  "baseline": null,
+  "checks": [
+    {
+      "name": "steady-state error Kc=0.5",
+      "passed": true,
+      "detail": "sim 0.5000 vs theory 0.5000"
+    },
+    {
+      "name": "closed-loop time constant Kc=0.5",
+      "passed": true,
+      "detail": "sim 5.00 s vs theory 5.00 s (sample = 0.1 s)"
+    },
+    {
+      "name": "steady-state error Kc=1.0",
+      "passed": true,
+      "detail": "sim 0.3333 vs theory 0.3333"
+    },
+    {
+      "name": "closed-loop time constant Kc=1.0",
+      "passed": true,
+      "detail": "sim 3.30 s vs theory 3.33 s (sample = 0.1 s)"
+    },
+    {
+      "name": "steady-state error Kc=2.0",
+      "passed": true,
+      "detail": "sim 0.2000 vs theory 0.2000"
+    },
+    {
+      "name": "closed-loop time constant Kc=2.0",
+      "passed": true,
+      "detail": "sim 2.00 s vs theory 2.00 s (sample = 0.1 s)"
+    },
+    {
+      "name": "steady-state error Kc=5.0",
+      "passed": true,
+      "detail": "sim 0.0909 vs theory 0.0909"
+    },
+    {
+      "name": "closed-loop time constant Kc=5.0",
+      "passed": true,
+      "detail": "sim 0.90 s vs theory 0.91 s (sample = 0.1 s)"
+    },
+    {
+      "name": "open-loop disturbance gain",
+      "passed": true,
+      "detail": "1.0000"
+    },
+    {
+      "name": "closed-loop disturbance attenuation",
+      "passed": true,
+      "detail": "0.2000"
+    },
+    {
+      "name": "stability prediction L=1.0",
+      "passed": true,
+      "detail": "Ku=8.18, Kc=3.0; simulated growth=False"
+    },
+    {
+      "name": "stability prediction L=2.0",
+      "passed": true,
+      "detail": "Ku=4.25, Kc=3.0; simulated growth=False"
+    },
+    {
+      "name": "stability prediction L=5.0",
+      "passed": true,
+      "detail": "Ku=1.90, Kc=3.0; simulated growth=True"
+    },
+    {
+      "name": "stability prediction L=8.0",
+      "passed": true,
+      "detail": "Ku=1.32, Kc=3.0; simulated growth=True"
+    },
+    {
+      "name": "closed-loop output change for dK=-0.2",
+      "passed": true,
+      "detail": "sim -0.0476 vs exact -0.0476; first-order S*dK = -0.0400; open loop = -0.2000"
+    },
+    {
+      "name": "closed-loop output change for dK=+0.2",
+      "passed": true,
+      "detail": "sim 0.0345 vs exact 0.0345; first-order S*dK = 0.0400; open loop = +0.2000"
+    }
+  ],
+  "limitations": [
+    "Linear, noise-free, unsaturated simulation.",
+    "Delay rounded to whole samples.",
+    "No hardware or controller-in-the-loop validation."
+  ],
+  "result_status": "completed",
+  "figure_references": [
+    "experiments/figures/exp_01_feedback_fundamentals/feedback_fundamentals.png"
+  ],
+  "execution_timestamp": "2026-11-25T10:40:04+00:00",
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/01_fundamentals/01_control_fundamentals.ipynb"
+}

@@ -1,0 +1,38 @@
+{
+  "controller_parameters": {
+    "IMC lambda_s": 1.5,
+    "PID": {
+      "kp": 2.75,
+      "ti": 5.5,
+      "td": 0.45454545454545453
+    },
+    "PI": {
+      "kp": 2.0,
+      "ti": 5.0,
+      "td": 0.0
+    },
+    "u_limits": [
+      0.0,
+      1.5
+    ]
+  },
+  "plant_parameters": {
+    "K": 1.0,
+    "T_s": 5.0,
+    "L_s": 1.0
+  },
+  "sampling_time_s": 0.05,
+  "input_configuration": {
+    "setpoint": "step 1.0; 2.0 then 1.0 (windup case)"
+  },
+  "disturbance_configuration": {
+    "input_step": 0.3,
+    "sensor_noise_std": 0.01
+  },
+  "operating_conditions": {
+    "saturation": "[0, 1.5] in the windup scenario"
+  },
+  "number_of_trials": 1,
+  "random_seed": 7,
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/02_classical/03_pid.ipynb"
+}

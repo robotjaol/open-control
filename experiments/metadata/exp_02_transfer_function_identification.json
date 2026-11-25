@@ -1,0 +1,90 @@
+{
+  "experiment_id": "exp_02_transfer_function_identification",
+  "title": "Transfer-function modelling and FOPDT identification",
+  "notebook": "notebooks/01_fundamentals/02_transfer_function_modeling.ipynb",
+  "notebook_id": "02_transfer_function_modeling",
+  "algorithm": "Two-point and least-squares FOPDT fit",
+  "application": "Step-test identification",
+  "plant_model": "DC motor 2nd order; FOPDT; 1.5/(s+1)^3",
+  "category": "Fundamentals",
+  "difficulty": "Beginner",
+  "roadmap_level": 1,
+  "lab": "process",
+  "experiment_type": "software_simulation",
+  "dataset": {
+    "name": "simulated step tests",
+    "kind": "simulated",
+    "description": "Noise generated with numpy default_rng-compatible seeds 0..29."
+  },
+  "references": [
+    {
+      "key": "am2021",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "ah1995",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "seborg2016",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "krause2013",
+      "kind": "reference",
+      "status": "verified"
+    }
+  ],
+  "status": {
+    "content": "Complete (15/15 sections)",
+    "software": "Executed from a clean kernel; local unit tests passed at build time; GitHub Actions has not been run on this repository",
+    "research": "4 verified, 0 partial",
+    "simulation": "6/6 checks passed (completed)",
+    "hardware": "Not validated"
+  },
+  "figures": [
+    "experiments/figures/exp_02_transfer_function_identification/identification.png"
+  ],
+  "limitations": [
+    "Simulated data only; real step tests add sensor, friction and actuator effects.",
+    "30 seeds per noise level gives a rough estimate of spread, not a confidence interval.",
+    "Motor parameters are illustrative, not measured."
+  ],
+  "checks": [
+    {
+      "name": "motor TF vs RK4 simulation",
+      "passed": true,
+      "detail": "max rel error 6.71e-09"
+    },
+    {
+      "name": "DC gain formula",
+      "passed": true,
+      "detail": "149.07 vs 149.07 rad/s at t=1 s"
+    },
+    {
+      "name": "python-control poles equal roots of the analytic denominator",
+      "passed": true,
+      "detail": "[-573.60661056  -93.56005611] vs [-573.60661056  -93.56005611]"
+    },
+    {
+      "name": "noise-free recovery, two_point",
+      "passed": true,
+      "detail": "K=1.998 T=7.988 L=1.496"
+    },
+    {
+      "name": "noise-free recovery, least_squares",
+      "passed": true,
+      "detail": "K=2.000 T=8.000 L=1.500"
+    },
+    {
+      "name": "motor FOPDT fit T vs half-rule T (10 %)",
+      "passed": true,
+      "detail": "fit T=11.03 ms vs half rule 11.56 ms; exact slow pole 10.69 ms; first-order formula 12.42 ms"
+    }
+  ],
+  "execution_timestamp": "2026-11-25T10:40:07+00:00",
+  "result_file": "experiments/results/exp_02_transfer_function_identification.json"
+}

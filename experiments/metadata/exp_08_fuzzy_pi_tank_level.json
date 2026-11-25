@@ -1,0 +1,148 @@
+{
+  "experiment_id": "exp_08_fuzzy_pi_tank_level",
+  "title": "Fuzzy PI vs PI vs gain-scheduled PI on a nonlinear tank, matched tuning budget",
+  "notebook": "notebooks/05_intelligent/08_fuzzy.ipynb",
+  "notebook_id": "08_fuzzy",
+  "algorithm": "Mamdani fuzzy PI (incremental), PI, gain-scheduled PI; Nelder-Mead tuning",
+  "application": "Tank level control (illustrative)",
+  "plant_model": "Single tank with sqrt outflow (RK4)",
+  "category": "Intelligent control",
+  "difficulty": "Intermediate",
+  "roadmap_level": 5,
+  "lab": "process",
+  "experiment_type": "software_simulation",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated tank, illustrative parameters; Gaussian measurement noise in test B."
+  },
+  "references": [
+    {
+      "key": "zadeh1965",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "mamdani1975",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "ah1995",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "seborg2016",
+      "kind": "reference",
+      "status": "verified"
+    }
+  ],
+  "status": {
+    "content": "Complete (15/15 sections)",
+    "software": "Executed from a clean kernel; local unit tests passed at build time; GitHub Actions has not been run on this repository",
+    "research": "4 verified, 0 partial",
+    "simulation": "17/17 checks passed (completed)",
+    "hardware": "Not validated"
+  },
+  "figures": [
+    "experiments/figures/exp_08_fuzzy_pi_tank_level/responses.png",
+    "experiments/figures/exp_08_fuzzy_pi_tank_level/tuning_and_variants.png"
+  ],
+  "limitations": [
+    "One plant, one rule base, one tuning algorithm; no statistical repeats over seeds for tuning.",
+    "Illustrative plant parameters; no measured data.",
+    "Local optimiser (Nelder-Mead) from a model-based start; a different start or budget could change the ranking.",
+    "GS-PI uses plant structure the other controllers do not.",
+    "No hardware validation."
+  ],
+  "checks": [
+    {
+      "name": "membership degrees sum to 1 on [-1,1] (partition of unity)",
+      "passed": true,
+      "detail": "max deviation 6.7e-16"
+    },
+    {
+      "name": "triangular(0.25; 0, 0.5, 1) = 0.5 and 0 outside the feet",
+      "passed": true,
+      "detail": "hand values"
+    },
+    {
+      "name": "rule base is odd: Phi(-e,-de) = -Phi(e,de)",
+      "passed": true,
+      "detail": "max asymmetry 5.6e-16"
+    },
+    {
+      "name": "Phi(e, 0) is non-decreasing in e",
+      "passed": true,
+      "detail": "41 points on the de = 0 line"
+    },
+    {
+      "name": "Phi(0,0) = 0",
+      "passed": true,
+      "detail": "6.660006146521636e-18"
+    },
+    {
+      "name": "Phi(1,1) within 5e-3 of the closed-form centroid 8/9 on the default 201-point universe",
+      "passed": true,
+      "detail": "0.8922 vs 0.8889"
+    },
+    {
+      "name": "Phi(1,1) converges to 8/9 when the universe is refined to 20001 points (error < 2e-4)",
+      "passed": true,
+      "detail": "0.88892"
+    },
+    {
+      "name": "equivalent start: fuzzy and PI increments agree in the linear region (<2%)",
+      "passed": true,
+      "detail": "8.025e-06 vs 8.041e-06"
+    },
+    {
+      "name": "local plant gain from simulation follows 2 sqrt(h)/c (nonlinear gain ratio 3 m vs 0.5 m)",
+      "passed": true,
+      "detail": "ratio sim/theory [1.01 1.01 1.01 1.01]"
+    },
+    {
+      "name": "same tuning budget: every controller used 100 to 104 objective evaluations",
+      "passed": true,
+      "detail": "{'PI': 100, 'GS-PI': 100, 'Fuzzy PI': 100}"
+    },
+    {
+      "name": "PI: tuned training cost <= starting cost",
+      "passed": true,
+      "detail": "1532 -> 871"
+    },
+    {
+      "name": "GS-PI: tuned training cost <= starting cost",
+      "passed": true,
+      "detail": "1626 -> 891"
+    },
+    {
+      "name": "Fuzzy PI: tuned training cost <= starting cost",
+      "passed": true,
+      "detail": "3584 -> 1028"
+    },
+    {
+      "name": "PI: end-of-segment error below 3% of the largest step on test A (steady state reached)",
+      "passed": true,
+      "detail": "0.001 m"
+    },
+    {
+      "name": "GS-PI: end-of-segment error below 3% of the largest step on test A (steady state reached)",
+      "passed": true,
+      "detail": "0.003 m"
+    },
+    {
+      "name": "Fuzzy PI: end-of-segment error below 3% of the largest step on test A (steady state reached)",
+      "passed": true,
+      "detail": "0.000 m"
+    },
+    {
+      "name": "repeat tuning: all 15 repeat runs produced finite test costs",
+      "passed": true,
+      "detail": "15 runs"
+    }
+  ],
+  "execution_timestamp": "2026-11-25T10:42:27+00:00",
+  "result_file": "experiments/results/exp_08_fuzzy_pi_tank_level.json"
+}

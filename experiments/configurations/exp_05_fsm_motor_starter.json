@@ -1,0 +1,30 @@
+{
+  "controller_parameters": {
+    "timeouts_s": {
+      "STARTING": 5.0,
+      "STOPPING": 10.0
+    }
+  },
+  "plant_parameters": {
+    "run_feedback_delay_s": 1.5,
+    "stop_feedback_delay_s": 3.0
+  },
+  "sampling_time_s": 0.1,
+  "input_configuration": {
+    "scenarios": [
+      "A normal run",
+      "B start failure",
+      "C overload",
+      "D emergency stop"
+    ]
+  },
+  "disturbance_configuration": {
+    "overload_at_s": 8.0
+  },
+  "operating_conditions": {
+    "events_per_scan": 1
+  },
+  "number_of_trials": 10,
+  "random_seed": 20261125,
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/03_discrete/05_fsm.ipynb"
+}

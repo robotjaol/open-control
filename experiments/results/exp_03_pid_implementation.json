@@ -1,0 +1,214 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "exp_03_pid_implementation",
+  "title": "PID structure and implementation effects",
+  "notebook": "notebooks/02_classical/03_pid.ipynb",
+  "algorithm": "Discrete PID with filtered derivative and anti-windup",
+  "application": "Generic FOPDT loop (illustrative)",
+  "plant_model": "FOPDT K=1, T=5 s, L=1 s",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated plant; seeded sensor noise."
+  },
+  "experiment_type": "software_simulation",
+  "controller_parameters": {
+    "IMC lambda_s": 1.5,
+    "PID": {
+      "kp": 2.75,
+      "ti": 5.5,
+      "td": 0.45454545454545453
+    },
+    "PI": {
+      "kp": 2.0,
+      "ti": 5.0,
+      "td": 0.0
+    },
+    "u_limits": [
+      0.0,
+      1.5
+    ]
+  },
+  "plant_parameters": {
+    "K": 1.0,
+    "T_s": 5.0,
+    "L_s": 1.0
+  },
+  "sampling_time_s": 0.05,
+  "input_configuration": {
+    "setpoint": "step 1.0; 2.0 then 1.0 (windup case)"
+  },
+  "disturbance_configuration": {
+    "input_step": 0.3,
+    "sensor_noise_std": 0.01
+  },
+  "operating_conditions": {
+    "saturation": "[0, 1.5] in the windup scenario"
+  },
+  "number_of_trials": 1,
+  "random_seed": 7,
+  "software_environment": {
+    "python": "3.13.18",
+    "platform": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+    "cpu_count": 2,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2",
+      "pandas": "3.0.5",
+      "control": "0.10.2"
+    }
+  },
+  "hardware_configuration": null,
+  "firmware_version": null,
+  "metrics": {
+    "P_PI_PID": {
+      "P": {
+        "overshoot_percent": 0.0,
+        "settling_time": null,
+        "steady_state_error_before_disturbance": 0.3333333333333338,
+        "iae_total": 24.175566203685957,
+        "final_error": 0.23333333333333384
+      },
+      "PI": {
+        "overshoot_percent": 0.10042670193231018,
+        "settling_time": 5.300000000000001,
+        "steady_state_error_before_disturbance": 2.475478034114076e-06,
+        "iae_total": 3.2276201059539913,
+        "final_error": -8.962085344377257e-05
+      },
+      "PID": {
+        "overshoot_percent": 2.3195019300266573,
+        "settling_time": 10.05,
+        "steady_state_error_before_disturbance": -7.379374948079942e-05,
+        "iae_total": 2.970063867797303,
+        "final_error": -7.339151347096617e-05
+      }
+    },
+    "dlsim_reference": {
+      "max_abs_difference": 3.3306690738754696e-15
+    },
+    "derivative_kick": {
+      "naive (derivative on error)": {
+        "largest_one_sample_change_in_u": 27.775,
+        "u_peak": 27.775
+      },
+      "library (derivative on measurement, filtered)": {
+        "largest_one_sample_change_in_u": 2.775,
+        "u_peak": 3.2750000000000004
+      }
+    },
+    "windup": {
+      "none": {
+        "recovery_time_to_2pct_band_s": 54.35,
+        "undershoot_below_setpoint": 0.0,
+        "iae_after_return": 21.50226918238592,
+        "saturated_fraction": 0.54625
+      },
+      "clamp": {
+        "recovery_time_to_2pct_band_s": 17.55,
+        "undershoot_below_setpoint": 0.18992896238272994,
+        "iae_after_return": 2.3850498226534222,
+        "saturated_fraction": 0.25
+      },
+      "backcalc": {
+        "recovery_time_to_2pct_band_s": 4.65,
+        "undershoot_below_setpoint": 0.0025026318795662306,
+        "iae_after_return": 1.22519284886638,
+        "saturated_fraction": 0.25
+      }
+    },
+    "derivative_filter_noise": {
+      "0.05": {
+        "total_variation_u": 164.70980476203158,
+        "iae": 2.4483858106277867
+      },
+      "0.25": {
+        "total_variation_u": 62.99321707123341,
+        "iae": 2.4326758401087303
+      },
+      "1.0": {
+        "total_variation_u": 34.324993541444954,
+        "iae": 2.3962850365601627
+      }
+    },
+    "setpoint_weight": {
+      "1.0": {
+        "overshoot_percent": 0.10042670193231018,
+        "rise_time_10_90": 2.7602969297868087
+      },
+      "0.6": {
+        "overshoot_percent": 0.0,
+        "rise_time_10_90": 8.135030252186878
+      },
+      "0.3": {
+        "overshoot_percent": 0.0,
+        "rise_time_10_90": 10.649979008959093
+      }
+    }
+  },
+  "baseline": null,
+  "checks": [
+    {
+      "name": "P offset equals 1/(1+Kc K)",
+      "passed": true,
+      "detail": "0.3333"
+    },
+    {
+      "name": "integral action removes offset (PI, PID)",
+      "passed": true,
+      "detail": "PI -9.0e-05, PID -7.3e-05 after the disturbance"
+    },
+    {
+      "name": "PI loop equals scipy dlsim of the closed-loop state model",
+      "passed": true,
+      "detail": "max |diff| = 3.3e-15"
+    },
+    {
+      "name": "P term",
+      "passed": true,
+      "detail": "u = Kp (r - y)"
+    },
+    {
+      "name": "derivative filter first-sample value -Kd dy/(Tf+Ts)",
+      "passed": true,
+      "detail": "-4.0000"
+    },
+    {
+      "name": "bumpless transfer (output continues from manual value + I step)",
+      "passed": true,
+      "detail": "0.720000"
+    },
+    {
+      "name": "derivative on measurement removes the setpoint kick",
+      "passed": true,
+      "detail": "largest one-sample change in u: naive 27.77, library 2.77 (expected naive about Kp+Kd/Ts = 27.75, library about Kp = 2.75)"
+    },
+    {
+      "name": "anti-windup shortens recovery after saturation",
+      "passed": true,
+      "detail": "recovery time [s]: none=54.4, clamp=17.6, backcalc=4.7"
+    },
+    {
+      "name": "longer derivative filter lowers control activity under noise",
+      "passed": true,
+      "detail": "TV(u) = 164.71, 62.99, 34.32"
+    },
+    {
+      "name": "setpoint weight does not change the disturbance response (late window)",
+      "passed": true,
+      "detail": "max diff 7.8e-06"
+    }
+  ],
+  "limitations": [
+    "One plant and one noise seed; the trends are not a general ranking.",
+    "Forward-Euler integrator; no scan-time jitter or quantisation.",
+    "No hardware or controller-in-the-loop validation."
+  ],
+  "result_status": "completed",
+  "figure_references": [
+    "experiments/figures/exp_03_pid_implementation/pid_implementation.png"
+  ],
+  "execution_timestamp": "2026-11-25T10:40:10+00:00",
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/02_classical/03_pid.ipynb"
+}

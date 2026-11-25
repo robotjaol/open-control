@@ -1,0 +1,263 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "exp_10_pmsm_foc",
+  "title": "PMSM field-oriented control: transforms, current loops, decoupling, voltage limit",
+  "notebook": "notebooks/04_motor_control/10_pmsm_foc.ipynb",
+  "algorithm": "Clarke/Park transforms, dq PI current control with decoupling, SVPWM (min-max), speed PI",
+  "application": "Surface-magnet PMSM servo drive (illustrative)",
+  "plant_model": "PMSM dq model, averaged inverter, RK4",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated machine, illustrative parameters."
+  },
+  "experiment_type": "software_simulation",
+  "controller_parameters": {
+    "current_bandwidth_hz": 300.0,
+    "speed_bandwidth_hz": 30.0,
+    "current_limit_A": 10.0,
+    "speed_loop_ratio": 10
+  },
+  "plant_parameters": {
+    "Rs": 0.35,
+    "Ld": 0.0012,
+    "Lq": 0.0012,
+    "psi": 0.015,
+    "p": 4,
+    "J": 5e-05,
+    "B": 1e-05,
+    "Vdc": 48.0
+  },
+  "sampling_time_s": 0.0001,
+  "input_configuration": {
+    "speed_ref_rad_s": 200.0,
+    "iq_step_A": 5.0
+  },
+  "disturbance_configuration": {
+    "load_step_Nm": 0.1,
+    "at_s": 0.3
+  },
+  "operating_conditions": {
+    "held_speed_rad_s": 200.0,
+    "vdc_V": 48.0
+  },
+  "number_of_trials": 10,
+  "random_seed": 20261125,
+  "software_environment": {
+    "python": "3.13.18",
+    "platform": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+    "cpu_count": 2,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2",
+      "pandas": "3.0.5",
+      "control": "0.10.2"
+    }
+  },
+  "hardware_configuration": null,
+  "firmware_version": null,
+  "metrics": {
+    "decoupling_delay_study": [
+      {
+        "decoupling": false,
+        "angle_advance": 0.0,
+        "rise_ms": 5.246892207214462,
+        "overshoot_percent": 0.6134262642268906,
+        "peak_abs_id_A": 1.2664582273600908,
+        "id_final_A": 0.046571196943966164
+      },
+      {
+        "decoupling": false,
+        "angle_advance": 1.5,
+        "rise_ms": 5.819122319579515,
+        "overshoot_percent": 0.332891696575599,
+        "peak_abs_id_A": 1.1377447523485005,
+        "id_final_A": 0.06195445064144289
+      },
+      {
+        "decoupling": true,
+        "angle_advance": 0.0,
+        "rise_ms": 1.0112802925638325,
+        "overshoot_percent": 0.938611012984869,
+        "peak_abs_id_A": 0.2813229622750316,
+        "id_final_A": 0.00048101921738608056
+      },
+      {
+        "decoupling": true,
+        "angle_advance": 1.5,
+        "rise_ms": 1.1552506653877401,
+        "overshoot_percent": 0.0,
+        "peak_abs_id_A": 0.32238837271546883,
+        "id_final_A": -0.0021286423573632085
+      }
+    ],
+    "parameter_mismatch": {
+      "nominal": {
+        "rise_ms": 1.1552506653877401,
+        "overshoot_percent": 0.0,
+        "peak_abs_id_A": 0.32238837271546883,
+        "iq_final_A": 4.99886371501452,
+        "id_final_A": -0.0021286423573632085
+      },
+      "Rs x1.5": {
+        "rise_ms": 1.5921925082610024,
+        "overshoot_percent": 0.0,
+        "peak_abs_id_A": 0.3115405432734186,
+        "iq_final_A": 4.994518862886696,
+        "id_final_A": -0.003510132836510804
+      },
+      "L x0.7": {
+        "rise_ms": 0.9664515459909813,
+        "overshoot_percent": 0.031448266319711315,
+        "peak_abs_id_A": 0.6502945894853502,
+        "iq_final_A": 5.001523898597356,
+        "id_final_A": -0.008750672696104855
+      },
+      "psi x0.85": {
+        "rise_ms": 0.8590309553020118,
+        "overshoot_percent": 2.90518722817521,
+        "peak_abs_id_A": 0.28707462937644523,
+        "iq_final_A": 5.002019647755135,
+        "id_final_A": -0.001707628389179483
+      }
+    },
+    "speed_loop": {
+      "overshoot_percent": 11.788657493808397,
+      "settling_ms": 30.700000000000003,
+      "peak_iq_A": 9.978963606634338,
+      "load_dip_rad_s": 4.6550820515819
+    },
+    "voltage_limit": {
+      "top_speed_id0_bound_rad_s": 461.5771624399168,
+      "top_speed_sim_rad_s": 544.414936589815,
+      "id_at_limit_A": -1.8869837890272112,
+      "iq_at_limit_A": 0.0617413759312607,
+      "top_speed_pred_with_measured_id_rad_s": 543.3502976998464,
+      "v_linear_limit_V": 27.71281292110204
+    },
+    "current_loop": {
+      "rise_time_ms": 1.061661093989569,
+      "design_rise_time_ms": 1.1655446999096468
+    }
+  },
+  "baseline": null,
+  "checks": [
+    {
+      "name": "balanced set of amplitude 7: |alpha,beta| = 7 and dq = (7, 0) at its own angle",
+      "passed": true,
+      "detail": "200 random angles"
+    },
+    {
+      "name": "park/inv_park and clarke/inv_clarke round trips (error < 1e-12)",
+      "passed": true,
+      "detail": "random vectors"
+    },
+    {
+      "name": "three-phase power equals 1.5 (vd id + vq iq) for zero-sequence-free sets",
+      "passed": true,
+      "detail": "max error 2.7e-15"
+    },
+    {
+      "name": "SVPWM: duties within [0,1] and the realised vector equals the request up to 0.99 Vdc/sqrt3",
+      "passed": true,
+      "detail": "max vector error 1.1e-14"
+    },
+    {
+      "name": "SVPWM shortens a request 5% above Vdc/sqrt3 (scale < 1) and keeps duties valid",
+      "passed": true,
+      "detail": "min scale 0.9524"
+    },
+    {
+      "name": "voltage utilisation: SVPWM linear limit / sinusoidal PWM limit = 2/sqrt(3)",
+      "passed": true,
+      "detail": "1.15470"
+    },
+    {
+      "name": "dq steady state equals the algebraic solution (id, iq within 0.5%)",
+      "passed": true,
+      "detail": "sim [ 4.4653 -0.61  ] vs [ 4.4625 -0.6085] A"
+    },
+    {
+      "name": "electrical power = copper loss + mechanical power at steady state (error < 0.5% of the largest term)",
+      "passed": true,
+      "detail": "2.416 = 10.663 + -8.235 W, residual -0.0123 W"
+    },
+    {
+      "name": "dq from measured phase currents equals the model state (max error < 1e-9 A)",
+      "passed": true,
+      "detail": "8.9e-16 A"
+    },
+    {
+      "name": "current-loop rise time at standstill within 25% of 2.197/wc",
+      "passed": true,
+      "detail": "1.062 ms vs 1.166 ms"
+    },
+    {
+      "name": "decoupling cuts the d-axis excursion after a 5 A iq step by at least a factor 3 (200 rad/s)",
+      "passed": true,
+      "detail": "1.138 A without, 0.322 A with"
+    },
+    {
+      "name": "speed loop: zero steady-state speed error before and after the load step (<0.2%)",
+      "passed": true,
+      "detail": "200.000, 200.000 rad/s"
+    },
+    {
+      "name": "steady iq equals (Tl + B w)/kt within 2% and id is below 0.05 A",
+      "passed": true,
+      "detail": "iq 1.1339 vs 1.1333 A, id -0.0000 A"
+    },
+    {
+      "name": "torque-producing current stays within 10% of the 10 A limit",
+      "passed": true,
+      "detail": "peak iq 9.98 A"
+    },
+    {
+      "name": "commanded voltage magnitude never exceeds the linear limit Vdc/sqrt3",
+      "passed": true,
+      "detail": "peak 22.619 V vs 27.713 V"
+    },
+    {
+      "name": "at the voltage limit the controller reports saturation",
+      "passed": true,
+      "detail": "saturated fraction 1.00"
+    },
+    {
+      "name": "steady state at the limit: the algebraic voltage of the measured (id, iq, w) equals Vdc/sqrt3 (<1%)",
+      "passed": true,
+      "detail": "27.768 V vs 27.713 V"
+    },
+    {
+      "name": "steady state at the limit: iq equals B w / kt (within 0.02 A)",
+      "passed": true,
+      "detail": "0.0617 vs 0.0605 A"
+    },
+    {
+      "name": "speed equals the voltage-limit root evaluated with the measured id (within 2%)",
+      "passed": true,
+      "detail": "544.4 vs 543.4 rad/s"
+    },
+    {
+      "name": "the limiter pushed id negative (unintended field weakening, id < -0.5 A)",
+      "passed": true,
+      "detail": "id = -1.887 A"
+    }
+  ],
+  "limitations": [
+    "Averaged inverter: no PWM ripple, dead time, switch drops or current-sensor error.",
+    "Surface magnets (Ld = Lq), no saturation, no iron loss, no cogging.",
+    "Ideal rotor angle and phase-current measurement.",
+    "No field weakening or MTPA.",
+    "Illustrative parameters; no measured data.",
+    "No hardware validation."
+  ],
+  "result_status": "completed",
+  "figure_references": [
+    "experiments/figures/exp_10_pmsm_foc/speed_loop.png",
+    "experiments/figures/exp_10_pmsm_foc/decoupling_and_delay.png",
+    "experiments/figures/exp_10_pmsm_foc/voltage_limited_speed.png"
+  ],
+  "execution_timestamp": "2026-11-25T10:43:13+00:00",
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/04_motor_control/10_pmsm_foc.ipynb"
+}

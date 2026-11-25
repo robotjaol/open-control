@@ -1,0 +1,61 @@
+{
+  "controller_parameters": {
+    "PI": [
+      0.004877513865589978,
+      203.52688586105396
+    ],
+    "GS-PI": [
+      0.005408144120744971,
+      200.5208804882175
+    ],
+    "Fuzzy PI": [
+      0.27255967006392123,
+      3.0396173151502164,
+      0.0016110090320342152
+    ]
+  },
+  "plant_parameters": {
+    "area_m2": 0.8,
+    "c_out": 0.004,
+    "q_max": 0.008
+  },
+  "sampling_time_s": 10.0,
+  "input_configuration": {
+    "train": [
+      1.5,
+      2.5,
+      1.0
+    ],
+    "test A": [
+      0.6,
+      3.0,
+      1.8
+    ],
+    "test B": [
+      0.6,
+      3.0,
+      1.8
+    ]
+  },
+  "disturbance_configuration": {
+    "train": {
+      "outflow_m3s": 0.0006,
+      "noise_std_m": 0.01
+    },
+    "test A": {
+      "outflow_m3s": 0.001,
+      "noise_std_m": 0.0
+    },
+    "test B": {
+      "outflow_m3s": 0.001,
+      "noise_std_m": 0.01
+    }
+  },
+  "operating_conditions": {
+    "tuning_budget_evaluations": 100,
+    "segment_s": 3000.0
+  },
+  "number_of_trials": 18,
+  "random_seed": 20261125,
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/05_intelligent/08_fuzzy.ipynb"
+}

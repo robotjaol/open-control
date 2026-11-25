@@ -1,0 +1,333 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "exp_09_bldc_six_step",
+  "title": "BLDC six-step commutation: alignment, ripple, efficiency and cascade control",
+  "notebook": "notebooks/04_motor_control/09_bldc_six_step.ipynb",
+  "algorithm": "Six-step commutation with Hall sectors; PI and cascade PI speed control",
+  "application": "Low-cost BLDC drive (illustrative)",
+  "plant_model": "Averaged-PWM BLDC, trapezoidal back-EMF, ideal commutation (RK4, 20 us)",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated motor, illustrative parameters."
+  },
+  "experiment_type": "software_simulation",
+  "controller_parameters": {
+    "speed_bandwidth_hz": 20.0,
+    "current_bandwidth_hz": 200.0,
+    "current_limit_A": 6.0
+  },
+  "plant_parameters": {
+    "R": 0.4,
+    "L": 0.0008,
+    "Ke": 0.02,
+    "p": 4,
+    "J": 1.5e-05,
+    "B": 1e-06,
+    "Vdc": 24.0,
+    "flat_deg": 120.0
+  },
+  "sampling_time_s": 0.0001,
+  "input_configuration": {
+    "speed_ref_rad_s": 300.0
+  },
+  "disturbance_configuration": {
+    "load_torque_Nm": 0.05
+  },
+  "operating_conditions": {
+    "hall_offsets_deg": [
+      0,
+      10,
+      20
+    ],
+    "flat_widths_deg": [
+      120,
+      110,
+      100,
+      90,
+      80
+    ]
+  },
+  "number_of_trials": 17,
+  "random_seed": null,
+  "software_environment": {
+    "python": "3.13.18",
+    "platform": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+    "cpu_count": 2,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2",
+      "pandas": "3.0.5",
+      "control": "0.10.2"
+    }
+  },
+  "hardware_configuration": null,
+  "firmware_version": null,
+  "metrics": {
+    "controllers": [
+      {
+        "controller": "A single-loop PI",
+        "peak_current_A": 12.869785586890059,
+        "overshoot_percent": 0.0009699795199935579,
+        "settling_ms": 36.50000000000001,
+        "ess_percent": 0.0004312233295043673,
+        "iae": 2.57139228749584
+      },
+      {
+        "controller": "B cascade",
+        "peak_current_A": 5.659386848804748,
+        "overshoot_percent": 7.173213560479907,
+        "settling_ms": 50.0,
+        "ess_percent": 0.00012222629137189264,
+        "iae": 4.521630385751299
+      }
+    ],
+    "grid": [
+      {
+        "flat_deg": 120.0,
+        "hall_offset_deg": 0.0,
+        "torque_ripple_pp_percent": 2.0711906029909555,
+        "mean_current_A": 1.2576036648259088,
+        "mean_duty": 0.5418798355402507,
+        "speed_ripple_pp_percent": 0.000918249490116564,
+        "mean_speed": 300.00001781623746,
+        "efficiency": 0.9171349925472604
+      },
+      {
+        "flat_deg": 120.0,
+        "hall_offset_deg": 10.0,
+        "torque_ripple_pp_percent": 19.127518810658067,
+        "mean_current_A": 1.2766869587174168,
+        "mean_duty": 0.5350990966475908,
+        "speed_ripple_pp_percent": 0.034365635532067326,
+        "mean_speed": 300.00019861264724,
+        "efficiency": 0.9149515755307536
+      },
+      {
+        "flat_deg": 120.0,
+        "hall_offset_deg": 20.0,
+        "torque_ripple_pp_percent": 42.489557093448845,
+        "mean_current_A": 1.3351968645625398,
+        "mean_duty": 0.5159839135856197,
+        "speed_ripple_pp_percent": 0.09384706930517292,
+        "mean_speed": 299.9995495926377,
+        "efficiency": 0.9079696902109917
+      },
+      {
+        "flat_deg": 110.0,
+        "hall_offset_deg": 0.0,
+        "torque_ripple_pp_percent": 8.918371409302187,
+        "mean_current_A": 1.2643906500973252,
+        "mean_duty": 0.5394320200160191,
+        "speed_ripple_pp_percent": 0.009898703403377165,
+        "mean_speed": 300.0000027167163,
+        "efficiency": 0.916361945231786
+      },
+      {
+        "flat_deg": 110.0,
+        "hall_offset_deg": 10.0,
+        "torque_ripple_pp_percent": 24.4647718420543,
+        "mean_current_A": 1.292881033177992,
+        "mean_duty": 0.5295600493849116,
+        "speed_ripple_pp_percent": 0.0529635765482224,
+        "mean_speed": 300.00012285388135,
+        "efficiency": 0.913077082620946
+      },
+      {
+        "flat_deg": 110.0,
+        "hall_offset_deg": 20.0,
+        "torque_ripple_pp_percent": 46.009840833089655,
+        "mean_current_A": 1.361163053302908,
+        "mean_duty": 0.5081129896333088,
+        "speed_ripple_pp_percent": 0.11465055078952793,
+        "mean_speed": 300.00070815263285,
+        "efficiency": 0.9047709885587076
+      },
+      {
+        "flat_deg": 100.0,
+        "hall_offset_deg": 0.0,
+        "torque_ripple_pp_percent": 14.740947447726452,
+        "mean_current_A": 1.281098956185071,
+        "mean_duty": 0.533571232230216,
+        "speed_ripple_pp_percent": 0.026556394121285343,
+        "mean_speed": 300.0002133256597,
+        "efficiency": 0.9144246191162251
+      },
+      {
+        "flat_deg": 100.0,
+        "hall_offset_deg": 10.0,
+        "torque_ripple_pp_percent": 28.720934876784586,
+        "mean_current_A": 1.31131747199409,
+        "mean_duty": 0.5234711073443153,
+        "speed_ripple_pp_percent": 0.06884528627263732,
+        "mean_speed": 299.99978579025503,
+        "efficiency": 0.9108954407694205
+      },
+      {
+        "flat_deg": 100.0,
+        "hall_offset_deg": 20.0,
+        "torque_ripple_pp_percent": 49.75055633033496,
+        "mean_current_A": 1.3874855589924797,
+        "mean_duty": 0.500374807380442,
+        "speed_ripple_pp_percent": 0.11959613620476095,
+        "mean_speed": 300.0009100313949,
+        "efficiency": 0.9015952441135744
+      },
+      {
+        "flat_deg": 90.0,
+        "hall_offset_deg": 0.0,
+        "torque_ripple_pp_percent": 19.284810286221482,
+        "mean_current_A": 1.3042407251826538,
+        "mean_duty": 0.5257229971244848,
+        "speed_ripple_pp_percent": 0.04290448277331918,
+        "mean_speed": 300.00004814346283,
+        "efficiency": 0.91176406239912
+      },
+      {
+        "flat_deg": 90.0,
+        "hall_offset_deg": 10.0,
+        "torque_ripple_pp_percent": 30.967900919097595,
+        "mean_current_A": 1.3329312748982378,
+        "mean_duty": 0.5165831760601586,
+        "speed_ripple_pp_percent": 0.08134206748263763,
+        "mean_speed": 299.99935409550767,
+        "efficiency": 0.9082845771282492
+      },
+      {
+        "flat_deg": 90.0,
+        "hall_offset_deg": 20.0,
+        "torque_ripple_pp_percent": 51.64430033032434,
+        "mean_current_A": 1.4141440464694597,
+        "mean_duty": 0.49284617072640774,
+        "speed_ripple_pp_percent": 0.13402511174054504,
+        "mean_speed": 299.9996918927278,
+        "efficiency": 0.8982876639833298
+      },
+      {
+        "flat_deg": 80.0,
+        "hall_offset_deg": 0.0,
+        "torque_ripple_pp_percent": 21.76176052412771,
+        "mean_current_A": 1.331720944410274,
+        "mean_duty": 0.5168179656611022,
+        "speed_ripple_pp_percent": 0.0558573133556767,
+        "mean_speed": 299.99954130498065,
+        "efficiency": 0.9084988615787404
+      },
+      {
+        "flat_deg": 80.0,
+        "hall_offset_deg": 10.0,
+        "torque_ripple_pp_percent": 30.80027922720222,
+        "mean_current_A": 1.359507438629352,
+        "mean_duty": 0.508432928225404,
+        "speed_ripple_pp_percent": 0.08698410154201569,
+        "mean_speed": 300.0003982830459,
+        "efficiency": 0.9049989777086613
+      },
+      {
+        "flat_deg": 80.0,
+        "hall_offset_deg": 20.0,
+        "torque_ripple_pp_percent": 54.45299057944266,
+        "mean_current_A": 1.4401672328405477,
+        "mean_duty": 0.4857292873818018,
+        "speed_ripple_pp_percent": 0.1315689120268975,
+        "mean_speed": 300.0004811349041,
+        "efficiency": 0.8950547316831867
+      }
+    ],
+    "commutation_floor": {
+      "measured_open_loop_percent": 2.0356922625069913,
+      "predicted_open_loop_percent": 2.008315090688264,
+      "predicted_closed_loop_percent": 2.0784610925171667
+    },
+    "steady_state_check": {
+      "w_sim": 289.8753145566142,
+      "w_theory": 289.8550724637681,
+      "i_sim": 0.5072954010275583,
+      "i_theory": 0.5072463768115942
+    }
+  },
+  "baseline": null,
+  "checks": [
+    {
+      "name": "aligned: f_h - f_l = 2 at every angle (3600 angles, all six sectors visited)",
+      "passed": true,
+      "detail": "max |df-2| = 1.3e-15"
+    },
+    {
+      "name": "trapezoid_shape: flat top 120 deg wide, value 2 sin(theta) on the slope",
+      "passed": true,
+      "detail": "hand values"
+    },
+    {
+      "name": "steady-state speed equals the closed-form value (<0.1%)",
+      "passed": true,
+      "detail": "289.875 vs 289.855 rad/s"
+    },
+    {
+      "name": "steady-state pair current equals (Tl + B w)/kt (<0.5%)",
+      "passed": true,
+      "detail": "0.5073 vs 0.5072 A"
+    },
+    {
+      "name": "energy balance: D Vdc I = 2 R I^2 + kt w I (<0.5%)",
+      "passed": true,
+      "detail": "6.088 W = 0.206 + 5.882"
+    },
+    {
+      "name": "single loop draws more than 2x the 6 A limit at start",
+      "passed": true,
+      "detail": "12.9 A"
+    },
+    {
+      "name": "cascade keeps the pair current within 15% of the limit",
+      "passed": true,
+      "detail": "5.66 A"
+    },
+    {
+      "name": "A single-loop PI: steady-state speed error below 0.5%",
+      "passed": true,
+      "detail": "0.000 %"
+    },
+    {
+      "name": "B cascade: steady-state speed error below 0.5%",
+      "passed": true,
+      "detail": "0.000 %"
+    },
+    {
+      "name": "open loop, constant duty: torque ripple equals the commutation-granularity floor (sqrt3/2) p w dt within 10%",
+      "passed": true,
+      "detail": "measured 2.036 % vs predicted 2.008 %"
+    },
+    {
+      "name": "ideal trapezoid, aligned, closed loop: torque ripple within 10% of the same floor",
+      "passed": true,
+      "detail": "2.071 % vs 2.078 %"
+    },
+    {
+      "name": "narrower flat top (80 deg) gives more torque ripple than 120 deg at zero offset",
+      "passed": true,
+      "detail": "21.76 % vs 2.07 %"
+    },
+    {
+      "name": "efficiency falls as Hall offset grows (120 deg flat: 0 > 10 > 20 degrees)",
+      "passed": true,
+      "detail": "0.917, 0.915, 0.908"
+    }
+  ],
+  "limitations": [
+    "Ideal commutation: commutation current transient and the resulting torque dip are not modelled.",
+    "Averaged PWM, no dead time, switch drops, iron loss or mutual inductance.",
+    "Trapezoid as clipped sine; real back-EMF shapes differ.",
+    "Illustrative parameters; no measured data.",
+    "No hardware validation."
+  ],
+  "result_status": "completed",
+  "figure_references": [
+    "experiments/figures/exp_09_bldc_six_step/startup.png",
+    "experiments/figures/exp_09_bldc_six_step/ripple_current_efficiency.png",
+    "experiments/figures/exp_09_bldc_six_step/torque_waveforms.png"
+  ],
+  "execution_timestamp": "2026-11-25T10:43:09+00:00",
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/04_motor_control/09_bldc_six_step.ipynb"
+}

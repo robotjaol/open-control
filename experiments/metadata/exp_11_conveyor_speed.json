@@ -1,0 +1,175 @@
+{
+  "experiment_id": "exp_11_conveyor_speed",
+  "title": "Belt conveyor speed control under payload change",
+  "notebook": "notebooks/04_motor_control/11_conveyor_speed.ipynb",
+  "notebook_id": "11_conveyor_speed",
+  "algorithm": "SIMC PI, payload-scheduled PI, static feed-forward, anti-windup",
+  "application": "Bench-scale belt conveyor, illustrative",
+  "plant_model": "Single-mass belt with drive-force lag (RK4)",
+  "category": "Motor and drive control",
+  "difficulty": "Intermediate",
+  "roadmap_level": 3,
+  "lab": "motor",
+  "experiment_type": "software_simulation",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated conveyor with illustrative parameters."
+  },
+  "references": [
+    {
+      "key": "skogestad2003",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "ah1995",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "seborg2016",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "iso5048",
+      "kind": "standard",
+      "status": "verified"
+    }
+  ],
+  "status": {
+    "content": "Complete (15/15 sections)",
+    "software": "Executed from a clean kernel; local unit tests passed at build time; GitHub Actions has not been run on this repository",
+    "research": "4 verified, 0 partial",
+    "simulation": "22/22 checks passed (completed)",
+    "hardware": "Not validated"
+  },
+  "figures": [
+    "experiments/figures/exp_11_conveyor_speed/startup_by_payload.png",
+    "experiments/figures/exp_11_conveyor_speed/item_drop_and_windup.png",
+    "experiments/figures/exp_11_conveyor_speed/encoder_resolution.png"
+  ],
+  "limitations": [
+    "Illustrative parameters, not identified from a conveyor.",
+    "Single lumped mass: no belt elasticity or tension.",
+    "Items are captured instantly; real items slide for a short time.",
+    "Ideal load cell and ideal friction knowledge for feed-forward.",
+    "No stiction, no belt slip on the drive pulley.",
+    "No hardware validation."
+  ],
+  "checks": [
+    {
+      "name": "open-loop step matches scipy exact step (max error / final)",
+      "passed": true,
+      "detail": "5.14e-11"
+    },
+    {
+      "name": "transfer-function poles equal state-matrix eigenvalues",
+      "passed": true,
+      "detail": "[-20.          -1.81818182]"
+    },
+    {
+      "name": "steady speed at u=0.7 equals (F_max u - mu m g)/c, payload 0 kg",
+      "passed": true,
+      "detail": "0.6117 vs 0.6117 m/s"
+    },
+    {
+      "name": "steady speed at u=0.7 equals (F_max u - mu m g)/c, payload 10 kg",
+      "passed": true,
+      "detail": "0.5382 vs 0.5382 m/s"
+    },
+    {
+      "name": "steady speed at u=0.7 equals (F_max u - mu m g)/c, payload 30 kg",
+      "passed": true,
+      "detail": "0.3911 vs 0.3911 m/s"
+    },
+    {
+      "name": "identified K within 1% of F_max/c",
+      "passed": true,
+      "detail": "1.0008 vs 1.0000"
+    },
+    {
+      "name": "identified T + L within 3% of tau_m + tau_t (sum of time constants)",
+      "passed": true,
+      "detail": "0.3535 vs 0.3500 s"
+    },
+    {
+      "name": "linear closed loop, payload 0 kg: error vs exact < 2% of step at Ts = 10 ms",
+      "passed": true,
+      "detail": "1.33 %"
+    },
+    {
+      "name": "linear closed loop, payload 0 kg: error halves when Ts halves (ratio 1.8 to 2.2)",
+      "passed": true,
+      "detail": "ratio 2.01"
+    },
+    {
+      "name": "linear closed loop, payload 30 kg: error vs exact < 2% of step at Ts = 10 ms",
+      "passed": true,
+      "detail": "0.77 %"
+    },
+    {
+      "name": "linear closed loop, payload 30 kg: error halves when Ts halves (ratio 1.8 to 2.2)",
+      "passed": true,
+      "detail": "ratio 2.00"
+    },
+    {
+      "name": "empty-tuned PI on 30 kg: simulated overshoot equals exact-model overshoot within 1 point",
+      "passed": true,
+      "detail": "20.1 % vs 20.0 %"
+    },
+    {
+      "name": "zero steady-state error for every controller and payload (startup)",
+      "passed": true,
+      "detail": "max 0.003 %"
+    },
+    {
+      "name": "30 kg startup rise time equals the force-limited formula within 5%",
+      "passed": true,
+      "detail": "1.041 s vs 1.027 s"
+    },
+    {
+      "name": "scheduled PI: small-step rise time varies less than 10% across payloads",
+      "passed": true,
+      "detail": "8.4 %"
+    },
+    {
+      "name": "fixed PI: same spread is more than 3x the scheduled spread",
+      "passed": true,
+      "detail": "51.4 % vs 8.4 %"
+    },
+    {
+      "name": "speed one sample after the drop equals the momentum prediction within 1.5% (all controllers)",
+      "passed": true,
+      "detail": "max 0.58 %"
+    },
+    {
+      "name": "scheduled PI recovers from the drop at least 2x faster than the empty-tuned PI",
+      "passed": true,
+      "detail": "0.49 s vs 1.66 s"
+    },
+    {
+      "name": "with back-calculation the speed saturates at the closed-form maximum within 1%",
+      "passed": true,
+      "detail": "0.6884 vs 0.6911 m/s"
+    },
+    {
+      "name": "recovery time order after the reference drops: none > clamp > back-calculation",
+      "passed": true,
+      "detail": "5.97 > 1.62 > 0.51 s"
+    },
+    {
+      "name": "command peak-to-peak ripple is 0.7 to 1.3 times kp * (one encoder step)",
+      "passed": true,
+      "detail": "ratios [0.79 1.02 1.04]"
+    },
+    {
+      "name": "speed ripple falls monotonically with encoder resolution",
+      "passed": true,
+      "detail": "[1.269, 0.256, 0.143] %"
+    }
+  ],
+  "execution_timestamp": "2026-11-25T10:43:24+00:00",
+  "result_file": "experiments/results/exp_11_conveyor_speed.json"
+}

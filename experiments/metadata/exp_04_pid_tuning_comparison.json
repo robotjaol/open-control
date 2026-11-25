@@ -1,0 +1,127 @@
+{
+  "experiment_id": "exp_04_pid_tuning_comparison",
+  "title": "PID tuning rule comparison on FOPDT plants",
+  "notebook": "notebooks/02_classical/04_pid_tuning.ipynb",
+  "notebook_id": "04_pid_tuning",
+  "algorithm": "ZN open/closed, Cohen-Coon, Tyreus-Luyben, IMC, SIMC, relay autotune",
+  "application": "Generic process loop (illustrative)",
+  "plant_model": "FOPDT K=1, T=5 s, L in {0.5,1,2.5,5} s",
+  "category": "Classical control",
+  "difficulty": "Intermediate",
+  "roadmap_level": 1,
+  "lab": "process",
+  "experiment_type": "software_simulation",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated plants, no noise."
+  },
+  "references": [
+    {
+      "key": "zn1942",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "cc1953",
+      "kind": "reference",
+      "status": "partial"
+    },
+    {
+      "key": "tl1992",
+      "kind": "reference",
+      "status": "partial"
+    },
+    {
+      "key": "rmm1986",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "skogestad2003",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "ah1984",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "ah1995",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "seborg2016",
+      "kind": "reference",
+      "status": "verified"
+    }
+  ],
+  "status": {
+    "content": "Complete (15/15 sections)",
+    "software": "Executed from a clean kernel; local unit tests passed at build time; GitHub Actions has not been run on this repository",
+    "research": "6 verified, 2 partial",
+    "simulation": "9/9 checks passed (completed)",
+    "hardware": "Not validated"
+  },
+  "figures": [
+    "experiments/figures/exp_04_pid_tuning_comparison/step_and_load_responses.png",
+    "experiments/figures/exp_04_pid_tuning_comparison/metrics_by_rule.png"
+  ],
+  "limitations": [
+    "FOPDT plants only, one K and T; four L/T values.",
+    "Rule formulas transcribed from commonly published forms; not checked against the original papers.",
+    "Frequency-domain margins ignore the derivative filter and sampling delay.",
+    "No noise, saturation, or hardware validation."
+  ],
+  "checks": [
+    {
+      "name": "Ku grid vs root-finder, L=0.5",
+      "passed": true,
+      "detail": "16.3513 vs 16.3506"
+    },
+    {
+      "name": "P loop decays at 0.8 Ku and grows at 1.2 Ku, L=0.5",
+      "passed": true,
+      "detail": "late/mid amplitude ratio 0.00 (0.8 Ku), 1.95 (1.2 Ku)"
+    },
+    {
+      "name": "Ku grid vs root-finder, L=1.0",
+      "passed": true,
+      "detail": "8.5028 vs 8.5024"
+    },
+    {
+      "name": "P loop decays at 0.8 Ku and grows at 1.2 Ku, L=1.0",
+      "passed": true,
+      "detail": "late/mid amplitude ratio 0.00 (0.8 Ku), 2.66 (1.2 Ku)"
+    },
+    {
+      "name": "Ku grid vs root-finder, L=2.5",
+      "passed": true,
+      "detail": "3.8070 vs 3.8069"
+    },
+    {
+      "name": "P loop decays at 0.8 Ku and grows at 1.2 Ku, L=2.5",
+      "passed": true,
+      "detail": "late/mid amplitude ratio 0.00 (0.8 Ku), 24.26 (1.2 Ku)"
+    },
+    {
+      "name": "Ku grid vs root-finder, L=5.0",
+      "passed": true,
+      "detail": "2.2618 vs 2.2618"
+    },
+    {
+      "name": "P loop decays at 0.8 Ku and grows at 1.2 Ku, L=5.0",
+      "passed": true,
+      "detail": "late/mid amplitude ratio 0.00 (0.8 Ku), 1.81 (1.2 Ku)"
+    },
+    {
+      "name": "relay produced a sustained limit cycle for every plant",
+      "passed": true,
+      "detail": "{'0.5': True, '1.0': True, '2.5': True, '5.0': True}"
+    }
+  ],
+  "execution_timestamp": "2026-11-25T10:40:15+00:00",
+  "result_file": "experiments/results/exp_04_pid_tuning_comparison.json"
+}

@@ -1,0 +1,37 @@
+{
+  "controller_parameters": {},
+  "plant_parameters": {
+    "dc_motor": {
+      "R": 2.0,
+      "L": 0.003,
+      "Kt": 0.08,
+      "Ke": 0.08,
+      "J": 4e-05,
+      "B": 2e-05,
+      "Tc": 0.0,
+      "v_max": 24.0
+    },
+    "fopdt": {
+      "K": 2.0,
+      "T": 8.0,
+      "L": 1.5
+    }
+  },
+  "sampling_time_s": 0.1,
+  "input_configuration": {
+    "step": "12 V (motor), 1.0 (FOPDT)"
+  },
+  "disturbance_configuration": {
+    "measurement_noise_std": [
+      0.0,
+      0.02,
+      0.1
+    ]
+  },
+  "operating_conditions": {
+    "load_torque": 0.0
+  },
+  "number_of_trials": 30,
+  "random_seed": 0,
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/01_fundamentals/02_transfer_function_modeling.ipynb"
+}

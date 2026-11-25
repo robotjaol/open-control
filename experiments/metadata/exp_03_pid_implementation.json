@@ -1,0 +1,110 @@
+{
+  "experiment_id": "exp_03_pid_implementation",
+  "title": "PID structure and implementation effects",
+  "notebook": "notebooks/02_classical/03_pid.ipynb",
+  "notebook_id": "03_pid",
+  "algorithm": "Discrete PID with filtered derivative and anti-windup",
+  "application": "Generic FOPDT loop (illustrative)",
+  "plant_model": "FOPDT K=1, T=5 s, L=1 s",
+  "category": "Classical control",
+  "difficulty": "Beginner",
+  "roadmap_level": 1,
+  "lab": "process",
+  "experiment_type": "software_simulation",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated plant; seeded sensor noise."
+  },
+  "references": [
+    {
+      "key": "ah1995",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "am2021",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "zn1942",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "seborg2016",
+      "kind": "reference",
+      "status": "verified"
+    }
+  ],
+  "status": {
+    "content": "Complete (15/15 sections)",
+    "software": "Executed from a clean kernel; local unit tests passed at build time; GitHub Actions has not been run on this repository",
+    "research": "4 verified, 0 partial",
+    "simulation": "10/10 checks passed (completed)",
+    "hardware": "Not validated"
+  },
+  "figures": [
+    "experiments/figures/exp_03_pid_implementation/pid_implementation.png"
+  ],
+  "limitations": [
+    "One plant and one noise seed; the trends are not a general ranking.",
+    "Forward-Euler integrator; no scan-time jitter or quantisation.",
+    "No hardware or controller-in-the-loop validation."
+  ],
+  "checks": [
+    {
+      "name": "P offset equals 1/(1+Kc K)",
+      "passed": true,
+      "detail": "0.3333"
+    },
+    {
+      "name": "integral action removes offset (PI, PID)",
+      "passed": true,
+      "detail": "PI -9.0e-05, PID -7.3e-05 after the disturbance"
+    },
+    {
+      "name": "PI loop equals scipy dlsim of the closed-loop state model",
+      "passed": true,
+      "detail": "max |diff| = 3.3e-15"
+    },
+    {
+      "name": "P term",
+      "passed": true,
+      "detail": "u = Kp (r - y)"
+    },
+    {
+      "name": "derivative filter first-sample value -Kd dy/(Tf+Ts)",
+      "passed": true,
+      "detail": "-4.0000"
+    },
+    {
+      "name": "bumpless transfer (output continues from manual value + I step)",
+      "passed": true,
+      "detail": "0.720000"
+    },
+    {
+      "name": "derivative on measurement removes the setpoint kick",
+      "passed": true,
+      "detail": "largest one-sample change in u: naive 27.77, library 2.77 (expected naive about Kp+Kd/Ts = 27.75, library about Kp = 2.75)"
+    },
+    {
+      "name": "anti-windup shortens recovery after saturation",
+      "passed": true,
+      "detail": "recovery time [s]: none=54.4, clamp=17.6, backcalc=4.7"
+    },
+    {
+      "name": "longer derivative filter lowers control activity under noise",
+      "passed": true,
+      "detail": "TV(u) = 164.71, 62.99, 34.32"
+    },
+    {
+      "name": "setpoint weight does not change the disturbance response (late window)",
+      "passed": true,
+      "detail": "max diff 7.8e-06"
+    }
+  ],
+  "execution_timestamp": "2026-11-25T10:40:10+00:00",
+  "result_file": "experiments/results/exp_03_pid_implementation.json"
+}

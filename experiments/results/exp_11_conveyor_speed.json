@@ -1,0 +1,509 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "exp_11_conveyor_speed",
+  "title": "Belt conveyor speed control under payload change",
+  "notebook": "notebooks/04_motor_control/11_conveyor_speed.ipynb",
+  "algorithm": "SIMC PI, payload-scheduled PI, static feed-forward, anti-windup",
+  "application": "Bench-scale belt conveyor, illustrative",
+  "plant_model": "Single-mass belt with drive-force lag (RK4)",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated conveyor with illustrative parameters."
+  },
+  "experiment_type": "software_simulation",
+  "controller_parameters": {
+    "tau_c_s": 0.2,
+    "identified": {
+      "K": 1.0007516073257319,
+      "T": 0.31067149008692163,
+      "L": 0.04283129804701234
+    },
+    "output_limits": [
+      0.0,
+      1.0
+    ]
+  },
+  "plant_parameters": {
+    "m_belt": 12.0,
+    "c": 40.0,
+    "mu": 0.03,
+    "F_max": 40.0,
+    "tau_t": 0.05,
+    "eps": 0.01
+  },
+  "sampling_time_s": 0.01,
+  "input_configuration": {
+    "speed_reference_m_s": 0.5,
+    "payloads_kg": [
+      0.0,
+      10.0,
+      30.0
+    ]
+  },
+  "disturbance_configuration": {
+    "item_drop_kg": 15.0,
+    "initial_payload_kg": 5.0,
+    "at_s": 6.0
+  },
+  "operating_conditions": {
+    "encoder_diameter_m": 0.08,
+    "encoder_ppr": [
+      100,
+      400,
+      1600
+    ],
+    "ideal_load_cell": true
+  },
+  "number_of_trials": 25,
+  "random_seed": null,
+  "software_environment": {
+    "python": "3.13.18",
+    "platform": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+    "cpu_count": 2,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2",
+      "pandas": "3.0.5",
+      "control": "0.10.2"
+    }
+  },
+  "hardware_configuration": null,
+  "firmware_version": null,
+  "metrics": {
+    "identification": {
+      "T_fit": 0.31067149008692163,
+      "L_fit": 0.04283129804701234,
+      "T_half": 0.325,
+      "L_half": 0.025,
+      "rmse": 0.0004021644988822472
+    },
+    "startup": [
+      {
+        "controller": "A fixed, tuned empty",
+        "payload_kg": 0.0,
+        "rise_10_90_s": 0.5019918535521397,
+        "overshoot_pct": 0.0,
+        "settling_s": 1.03,
+        "iae": 0.14045526849476314,
+        "peak_cmd": 0.727555544894367,
+        "sat_fraction_pct": 0.0,
+        "ess_pct": 6.505906924303417e-12
+      },
+      {
+        "controller": "A fixed, tuned empty",
+        "payload_kg": 10.0,
+        "rise_10_90_s": 0.5726898689982146,
+        "overshoot_pct": 5.567304195306111,
+        "settling_s": 1.85,
+        "iae": 0.20212247610360037,
+        "peak_cmd": 0.8617013035122263,
+        "sat_fraction_pct": 0.0,
+        "ess_pct": 2.5956636839907787e-08
+      },
+      {
+        "controller": "A fixed, tuned empty",
+        "payload_kg": 30.0,
+        "rise_10_90_s": 1.0436747181017558,
+        "overshoot_pct": 9.521976127397046,
+        "settling_s": 2.97,
+        "iae": 0.3780675304697401,
+        "peak_cmd": 1.0,
+        "sat_fraction_pct": 11.700000000000001,
+        "ess_pct": 0.0017995738247567061
+      },
+      {
+        "controller": "B fixed, tuned 30 kg",
+        "payload_kg": 0.0,
+        "rise_10_90_s": 0.25154045226638966,
+        "overshoot_pct": 0.0,
+        "settling_s": 2.52,
+        "iae": 0.15657588590023544,
+        "peak_cmd": 1.0,
+        "sat_fraction_pct": 1.9,
+        "ess_pct": 0.0026382278993097863
+      },
+      {
+        "controller": "B fixed, tuned 30 kg",
+        "payload_kg": 10.0,
+        "rise_10_90_s": 0.5158816381460091,
+        "overshoot_pct": 0.0,
+        "settling_s": 2.41,
+        "iae": 0.19587588960064617,
+        "peak_cmd": 1.0,
+        "sat_fraction_pct": 3.5000000000000004,
+        "ess_pct": 0.0017558797231309597
+      },
+      {
+        "controller": "B fixed, tuned 30 kg",
+        "payload_kg": 30.0,
+        "rise_10_90_s": 1.0411566573526179,
+        "overshoot_pct": 0.0,
+        "settling_s": 1.93,
+        "iae": 0.3152519733689831,
+        "peak_cmd": 1.0,
+        "sat_fraction_pct": 10.6,
+        "ess_pct": 0.00042252405219045386
+      },
+      {
+        "controller": "C scheduled on payload",
+        "payload_kg": 0.0,
+        "rise_10_90_s": 0.5019918535521397,
+        "overshoot_pct": 0.0,
+        "settling_s": 1.03,
+        "iae": 0.14045526849476314,
+        "peak_cmd": 0.727555544894367,
+        "sat_fraction_pct": 0.0,
+        "ess_pct": 6.505906924303417e-12
+      },
+      {
+        "controller": "C scheduled on payload",
+        "payload_kg": 10.0,
+        "rise_10_90_s": 0.5928563650594812,
+        "overshoot_pct": 0.0,
+        "settling_s": 1.46,
+        "iae": 0.17194847538889085,
+        "peak_cmd": 1.0,
+        "sat_fraction_pct": 2.1999999999999997,
+        "ess_pct": 1.0204083800147146e-06
+      },
+      {
+        "controller": "C scheduled on payload",
+        "payload_kg": 30.0,
+        "rise_10_90_s": 1.0411566573526179,
+        "overshoot_pct": 0.0,
+        "settling_s": 1.93,
+        "iae": 0.3152519733689831,
+        "peak_cmd": 1.0,
+        "sat_fraction_pct": 10.6,
+        "ess_pct": 0.00042252405219045386
+      },
+      {
+        "controller": "D scheduled + feed-forward",
+        "payload_kg": 0.0,
+        "rise_10_90_s": 0.21370887181363993,
+        "overshoot_pct": 17.040167368449687,
+        "settling_s": 1.44,
+        "iae": 0.1315361147482371,
+        "peak_cmd": 1.0,
+        "sat_fraction_pct": 1.9,
+        "ess_pct": 2.275957200481571e-11
+      },
+      {
+        "controller": "D scheduled + feed-forward",
+        "payload_kg": 10.0,
+        "rise_10_90_s": 0.40432874529417157,
+        "overshoot_pct": 10.128146351927448,
+        "settling_s": 1.99,
+        "iae": 0.18105297906514525,
+        "peak_cmd": 1.0,
+        "sat_fraction_pct": 4.7,
+        "ess_pct": 2.5052833141359088e-06
+      },
+      {
+        "controller": "D scheduled + feed-forward",
+        "payload_kg": 30.0,
+        "rise_10_90_s": 1.0327290370520605,
+        "overshoot_pct": 4.413635437490804,
+        "settling_s": 2.71,
+        "iae": 0.32588776213156273,
+        "peak_cmd": 1.0,
+        "sat_fraction_pct": 13.5,
+        "ess_pct": 0.0009802864677332934
+      }
+    ],
+    "small_step": [
+      {
+        "controller": "A fixed, tuned empty",
+        "payload_kg": 0.0,
+        "rise_10_90_s": 0.41260361416742036,
+        "overshoot_pct": 0.0,
+        "settling_s": 0.8000000000000007
+      },
+      {
+        "controller": "A fixed, tuned empty",
+        "payload_kg": 10.0,
+        "rise_10_90_s": 0.4807633024711665,
+        "overshoot_pct": 7.956921314679066,
+        "settling_s": 1.8000000000000007
+      },
+      {
+        "controller": "A fixed, tuned empty",
+        "payload_kg": 30.0,
+        "rise_10_90_s": 0.6244777498538694,
+        "overshoot_pct": 20.09060485733705,
+        "settling_s": 3.75
+      },
+      {
+        "controller": "B fixed, tuned 30 kg",
+        "payload_kg": 0.0,
+        "rise_10_90_s": 0.12011583013677041,
+        "overshoot_pct": 0.0,
+        "settling_s": 2.210000000000001
+      },
+      {
+        "controller": "B fixed, tuned 30 kg",
+        "payload_kg": 10.0,
+        "rise_10_90_s": 0.21233949613771802,
+        "overshoot_pct": 0.0,
+        "settling_s": 1.7800000000000011
+      },
+      {
+        "controller": "B fixed, tuned 30 kg",
+        "payload_kg": 30.0,
+        "rise_10_90_s": 0.3805481299312321,
+        "overshoot_pct": 0.6952911876363377,
+        "settling_s": 0.6400000000000006
+      },
+      {
+        "controller": "C scheduled on payload",
+        "payload_kg": 0.0,
+        "rise_10_90_s": 0.41260361416742036,
+        "overshoot_pct": 0.0,
+        "settling_s": 0.8000000000000007
+      },
+      {
+        "controller": "C scheduled on payload",
+        "payload_kg": 10.0,
+        "rise_10_90_s": 0.4061989865610502,
+        "overshoot_pct": 0.0,
+        "settling_s": 0.7800000000000011
+      },
+      {
+        "controller": "C scheduled on payload",
+        "payload_kg": 30.0,
+        "rise_10_90_s": 0.3805481299312321,
+        "overshoot_pct": 0.6952911876363377,
+        "settling_s": 0.6400000000000006
+      }
+    ],
+    "item_drop": [
+      {
+        "controller": "A fixed, tuned empty",
+        "v_pre": 0.5000000018345395,
+        "v_after_one_sample": 0.2671659770136119,
+        "v_momentum": 0.2656250009745991,
+        "dip_m_s": 0.2328340229863881,
+        "recovery_s": 1.6600000000000001,
+        "iae_after": 0.11555886587043122,
+        "peak_cmd": 0.9820823999703646,
+        "sat_fraction_pct": 0.0
+      },
+      {
+        "controller": "B fixed, tuned 30 kg",
+        "v_pre": 0.49959418918956633,
+        "v_after_one_sample": 0.26694998235624107,
+        "v_momentum": 0.2654094130069571,
+        "dip_m_s": 0.23305001764375893,
+        "recovery_s": 0.48,
+        "iae_after": 0.07064100167327791,
+        "peak_cmd": 1.0,
+        "sat_fraction_pct": 5.0
+      },
+      {
+        "controller": "C scheduled on payload",
+        "v_pre": 0.4999996776176535,
+        "v_after_one_sample": 0.2671658067187746,
+        "v_momentum": 0.2656248287343784,
+        "dip_m_s": 0.2328341932812254,
+        "recovery_s": 0.49,
+        "iae_after": 0.07599586760115286,
+        "peak_cmd": 1.0,
+        "sat_fraction_pct": 4.5
+      },
+      {
+        "controller": "D scheduled + feed-forward",
+        "v_pre": 0.5000009669350405,
+        "v_after_one_sample": 0.26716648444382346,
+        "v_momentum": 0.26562551368424026,
+        "dip_m_s": 0.23283351555617654,
+        "recovery_s": 0.48,
+        "iae_after": 0.09073109718611971,
+        "peak_cmd": 1.0,
+        "sat_fraction_pct": 5.25
+      }
+    ],
+    "antiwindup": [
+      {
+        "antiwindup": "none",
+        "speed_before_drop": 0.6884379364434093,
+        "recovery_s": 5.97,
+        "min_speed_after": 0.4003000117809401,
+        "iae_after": 1.264142426238144
+      },
+      {
+        "antiwindup": "clamp",
+        "speed_before_drop": 0.6883962016909171,
+        "recovery_s": 1.62,
+        "min_speed_after": 0.36009545435344137,
+        "iae_after": 0.11791574360431609
+      },
+      {
+        "antiwindup": "backcalc",
+        "speed_before_drop": 0.6884379364434093,
+        "recovery_s": 0.51,
+        "min_speed_after": 0.39758523652792216,
+        "iae_after": 0.0743423010307398
+      }
+    ],
+    "encoder": [
+      {
+        "ppr": 100,
+        "quant_m_s": 0.25132741228718347,
+        "kp_times_q": 0.5890494261473598,
+        "cmd_ptp": 0.46795878813819536,
+        "speed_ptp_pct": 1.2691114174071094
+      },
+      {
+        "ppr": 400,
+        "quant_m_s": 0.06283185307179587,
+        "kp_times_q": 0.14726235653683994,
+        "cmd_ptp": 0.1498131211848307,
+        "speed_ptp_pct": 0.2560900825262502
+      },
+      {
+        "ppr": 1600,
+        "quant_m_s": 0.015707963267948967,
+        "kp_times_q": 0.036815589134209986,
+        "cmd_ptp": 0.0384649826461263,
+        "speed_ptp_pct": 0.14304985439143048
+      }
+    ],
+    "linear_error": {
+      "0kg_Ts10ms": 0.013344963786512287,
+      "0kg_Ts5ms": 0.00663902945210737,
+      "30kg_Ts10ms": 0.007721092507115057,
+      "30kg_Ts5ms": 0.0038555858150286504
+    }
+  },
+  "baseline": null,
+  "checks": [
+    {
+      "name": "open-loop step matches scipy exact step (max error / final)",
+      "passed": true,
+      "detail": "5.14e-11"
+    },
+    {
+      "name": "transfer-function poles equal state-matrix eigenvalues",
+      "passed": true,
+      "detail": "[-20.          -1.81818182]"
+    },
+    {
+      "name": "steady speed at u=0.7 equals (F_max u - mu m g)/c, payload 0 kg",
+      "passed": true,
+      "detail": "0.6117 vs 0.6117 m/s"
+    },
+    {
+      "name": "steady speed at u=0.7 equals (F_max u - mu m g)/c, payload 10 kg",
+      "passed": true,
+      "detail": "0.5382 vs 0.5382 m/s"
+    },
+    {
+      "name": "steady speed at u=0.7 equals (F_max u - mu m g)/c, payload 30 kg",
+      "passed": true,
+      "detail": "0.3911 vs 0.3911 m/s"
+    },
+    {
+      "name": "identified K within 1% of F_max/c",
+      "passed": true,
+      "detail": "1.0008 vs 1.0000"
+    },
+    {
+      "name": "identified T + L within 3% of tau_m + tau_t (sum of time constants)",
+      "passed": true,
+      "detail": "0.3535 vs 0.3500 s"
+    },
+    {
+      "name": "linear closed loop, payload 0 kg: error vs exact < 2% of step at Ts = 10 ms",
+      "passed": true,
+      "detail": "1.33 %"
+    },
+    {
+      "name": "linear closed loop, payload 0 kg: error halves when Ts halves (ratio 1.8 to 2.2)",
+      "passed": true,
+      "detail": "ratio 2.01"
+    },
+    {
+      "name": "linear closed loop, payload 30 kg: error vs exact < 2% of step at Ts = 10 ms",
+      "passed": true,
+      "detail": "0.77 %"
+    },
+    {
+      "name": "linear closed loop, payload 30 kg: error halves when Ts halves (ratio 1.8 to 2.2)",
+      "passed": true,
+      "detail": "ratio 2.00"
+    },
+    {
+      "name": "empty-tuned PI on 30 kg: simulated overshoot equals exact-model overshoot within 1 point",
+      "passed": true,
+      "detail": "20.1 % vs 20.0 %"
+    },
+    {
+      "name": "zero steady-state error for every controller and payload (startup)",
+      "passed": true,
+      "detail": "max 0.003 %"
+    },
+    {
+      "name": "30 kg startup rise time equals the force-limited formula within 5%",
+      "passed": true,
+      "detail": "1.041 s vs 1.027 s"
+    },
+    {
+      "name": "scheduled PI: small-step rise time varies less than 10% across payloads",
+      "passed": true,
+      "detail": "8.4 %"
+    },
+    {
+      "name": "fixed PI: same spread is more than 3x the scheduled spread",
+      "passed": true,
+      "detail": "51.4 % vs 8.4 %"
+    },
+    {
+      "name": "speed one sample after the drop equals the momentum prediction within 1.5% (all controllers)",
+      "passed": true,
+      "detail": "max 0.58 %"
+    },
+    {
+      "name": "scheduled PI recovers from the drop at least 2x faster than the empty-tuned PI",
+      "passed": true,
+      "detail": "0.49 s vs 1.66 s"
+    },
+    {
+      "name": "with back-calculation the speed saturates at the closed-form maximum within 1%",
+      "passed": true,
+      "detail": "0.6884 vs 0.6911 m/s"
+    },
+    {
+      "name": "recovery time order after the reference drops: none > clamp > back-calculation",
+      "passed": true,
+      "detail": "5.97 > 1.62 > 0.51 s"
+    },
+    {
+      "name": "command peak-to-peak ripple is 0.7 to 1.3 times kp * (one encoder step)",
+      "passed": true,
+      "detail": "ratios [0.79 1.02 1.04]"
+    },
+    {
+      "name": "speed ripple falls monotonically with encoder resolution",
+      "passed": true,
+      "detail": "[1.269, 0.256, 0.143] %"
+    }
+  ],
+  "limitations": [
+    "Illustrative parameters, not identified from a conveyor.",
+    "Single lumped mass: no belt elasticity or tension.",
+    "Items are captured instantly; real items slide for a short time.",
+    "Ideal load cell and ideal friction knowledge for feed-forward.",
+    "No stiction, no belt slip on the drive pulley.",
+    "No hardware validation."
+  ],
+  "result_status": "completed",
+  "figure_references": [
+    "experiments/figures/exp_11_conveyor_speed/startup_by_payload.png",
+    "experiments/figures/exp_11_conveyor_speed/item_drop_and_windup.png",
+    "experiments/figures/exp_11_conveyor_speed/encoder_resolution.png"
+  ],
+  "execution_timestamp": "2026-11-25T10:43:24+00:00",
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/04_motor_control/11_conveyor_speed.ipynb"
+}

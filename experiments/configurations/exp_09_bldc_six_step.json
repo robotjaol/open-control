@@ -1,0 +1,41 @@
+{
+  "controller_parameters": {
+    "speed_bandwidth_hz": 20.0,
+    "current_bandwidth_hz": 200.0,
+    "current_limit_A": 6.0
+  },
+  "plant_parameters": {
+    "R": 0.4,
+    "L": 0.0008,
+    "Ke": 0.02,
+    "p": 4,
+    "J": 1.5e-05,
+    "B": 1e-06,
+    "Vdc": 24.0,
+    "flat_deg": 120.0
+  },
+  "sampling_time_s": 0.0001,
+  "input_configuration": {
+    "speed_ref_rad_s": 300.0
+  },
+  "disturbance_configuration": {
+    "load_torque_Nm": 0.05
+  },
+  "operating_conditions": {
+    "hall_offsets_deg": [
+      0,
+      10,
+      20
+    ],
+    "flat_widths_deg": [
+      120,
+      110,
+      100,
+      90,
+      80
+    ]
+  },
+  "number_of_trials": 17,
+  "random_seed": null,
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/04_motor_control/09_bldc_six_step.ipynb"
+}

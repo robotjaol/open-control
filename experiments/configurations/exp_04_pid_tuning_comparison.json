@@ -1,0 +1,39 @@
+{
+  "controller_parameters": {
+    "rules": [
+      "Cohen-Coon",
+      "IMC (lam=max(L,0.2T))",
+      "SIMC PI",
+      "Tyreus-Luyben",
+      "ZN-closed",
+      "ZN-open",
+      "relay + ZN"
+    ],
+    "derivative_filter": "Tf = Td/10"
+  },
+  "plant_parameters": {
+    "K": 1.0,
+    "T_s": 5.0,
+    "L_s": [
+      0.5,
+      1.0,
+      2.5,
+      5.0
+    ]
+  },
+  "sampling_time_s": 0.05,
+  "input_configuration": {
+    "setpoint_step": 1.0
+  },
+  "disturbance_configuration": {
+    "input_step": 0.3,
+    "at": "10 (T+L)"
+  },
+  "operating_conditions": {
+    "saturation": "none",
+    "noise": "none"
+  },
+  "number_of_trials": 28,
+  "random_seed": null,
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/02_classical/04_pid_tuning.ipynb"
+}

@@ -1,0 +1,285 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "exp_05_fsm_motor_starter",
+  "title": "Motor starter as a Moore state machine",
+  "notebook": "notebooks/03_discrete/05_fsm.ipynb",
+  "algorithm": "Moore finite state machine with structural checks",
+  "application": "Direct-on-line motor starter sequencing (illustrative)",
+  "plant_model": "Motor feedback modelled as two fixed delays (1.5 s run, 3.0 s stop)",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Scripted scenarios and seeded random events."
+  },
+  "experiment_type": "software_simulation",
+  "controller_parameters": {
+    "timeouts_s": {
+      "STARTING": 5.0,
+      "STOPPING": 10.0
+    }
+  },
+  "plant_parameters": {
+    "run_feedback_delay_s": 1.5,
+    "stop_feedback_delay_s": 3.0
+  },
+  "sampling_time_s": 0.1,
+  "input_configuration": {
+    "scenarios": [
+      "A normal run",
+      "B start failure",
+      "C overload",
+      "D emergency stop"
+    ]
+  },
+  "disturbance_configuration": {
+    "overload_at_s": 8.0
+  },
+  "operating_conditions": {
+    "events_per_scan": 1
+  },
+  "number_of_trials": 10,
+  "random_seed": 20261125,
+  "software_environment": {
+    "python": "3.13.18",
+    "platform": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+    "cpu_count": 2,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2",
+      "pandas": "3.0.5",
+      "control": "0.10.2"
+    }
+  },
+  "hardware_configuration": null,
+  "firmware_version": null,
+  "metrics": {
+    "states": 6,
+    "events": 9,
+    "transitions_defined": 17,
+    "table_completeness": 0.3148148148148148,
+    "random_events": 20000,
+    "random_events_dropped_fraction": 0.82255,
+    "fuzz_mismatches": 0,
+    "scenarios": {
+      "A normal run": {
+        "entries": [
+          [
+            0.0,
+            "IDLE"
+          ],
+          [
+            1.0,
+            "STARTING"
+          ],
+          [
+            2.5,
+            "RUNNING"
+          ],
+          [
+            10.0,
+            "STOPPING"
+          ],
+          [
+            13.0,
+            "IDLE"
+          ]
+        ],
+        "dropped_events": []
+      },
+      "B start failure": {
+        "entries": [
+          [
+            0.0,
+            "IDLE"
+          ],
+          [
+            1.0,
+            "STARTING"
+          ],
+          [
+            6.0,
+            "FAULT"
+          ],
+          [
+            20.0,
+            "IDLE"
+          ]
+        ],
+        "dropped_events": []
+      },
+      "C overload": {
+        "entries": [
+          [
+            0.0,
+            "IDLE"
+          ],
+          [
+            1.0,
+            "STARTING"
+          ],
+          [
+            2.5,
+            "RUNNING"
+          ],
+          [
+            8.0,
+            "FAULT"
+          ],
+          [
+            12.0,
+            "IDLE"
+          ]
+        ],
+        "dropped_events": [
+          [
+            9.0,
+            "FAULT",
+            "start"
+          ]
+        ]
+      },
+      "D emergency stop": {
+        "entries": [
+          [
+            0.0,
+            "IDLE"
+          ],
+          [
+            1.0,
+            "STARTING"
+          ],
+          [
+            2.5,
+            "RUNNING"
+          ],
+          [
+            6.0,
+            "ESTOP"
+          ],
+          [
+            9.0,
+            "FAULT"
+          ],
+          [
+            12.0,
+            "IDLE"
+          ]
+        ],
+        "dropped_events": [
+          [
+            7.0,
+            "ESTOP",
+            "start"
+          ],
+          [
+            10.0,
+            "FAULT",
+            "start"
+          ]
+        ]
+      }
+    }
+  },
+  "baseline": null,
+  "checks": [
+    {
+      "name": "intended machine: no unreachable and no deadlock states",
+      "passed": true,
+      "detail": "unreachable=[], deadlock=[]"
+    },
+    {
+      "name": "every state can reach IDLE",
+      "passed": true,
+      "detail": "cannot reach IDLE: []"
+    },
+    {
+      "name": "checker finds the planted unreachable state",
+      "passed": true,
+      "detail": "{'ORPHAN'}"
+    },
+    {
+      "name": "checker finds the planted deadlock state",
+      "passed": true,
+      "detail": "{'LATCHED'}"
+    },
+    {
+      "name": "contactor is open in IDLE, STOPPING, FAULT, ESTOP",
+      "passed": true,
+      "detail": "enumerated over all reachable states"
+    },
+    {
+      "name": "estop leads to ESTOP from every other state in one step",
+      "passed": true,
+      "detail": "enumerated over all states"
+    },
+    {
+      "name": "ESTOP exits only to FAULT (no automatic restart)",
+      "passed": true,
+      "detail": "{'FAULT'}"
+    },
+    {
+      "name": "contactor-closed states entered only by start from IDLE and run_fb from STARTING",
+      "passed": true,
+      "detail": "{('IDLE', 'start')}, {('STARTING', 'run_fb')}"
+    },
+    {
+      "name": "FSM equals the if/elif reference on 20 000 random events",
+      "passed": true,
+      "detail": "mismatches=0, dropped fsm=16451, ref=16451"
+    },
+    {
+      "name": "scenario A normal run: state sequence, entry times and dropped events as derived",
+      "passed": true,
+      "detail": "got [(0.0, 'IDLE'), (1.0, 'STARTING'), (2.5, 'RUNNING'), (10.0, 'STOPPING'), (13.0, 'IDLE')], dropped []"
+    },
+    {
+      "name": "scenario A normal run: contactor never closed in FAULT or ESTOP",
+      "passed": true,
+      "detail": "violations at []"
+    },
+    {
+      "name": "scenario B start failure: state sequence, entry times and dropped events as derived",
+      "passed": true,
+      "detail": "got [(0.0, 'IDLE'), (1.0, 'STARTING'), (6.0, 'FAULT'), (20.0, 'IDLE')], dropped []"
+    },
+    {
+      "name": "scenario B start failure: contactor never closed in FAULT or ESTOP",
+      "passed": true,
+      "detail": "violations at []"
+    },
+    {
+      "name": "scenario C overload: state sequence, entry times and dropped events as derived",
+      "passed": true,
+      "detail": "got [(0.0, 'IDLE'), (1.0, 'STARTING'), (2.5, 'RUNNING'), (8.0, 'FAULT'), (12.0, 'IDLE')], dropped [(9.0, 'FAULT', 'start')]"
+    },
+    {
+      "name": "scenario C overload: contactor never closed in FAULT or ESTOP",
+      "passed": true,
+      "detail": "violations at []"
+    },
+    {
+      "name": "scenario D emergency stop: state sequence, entry times and dropped events as derived",
+      "passed": true,
+      "detail": "got [(0.0, 'IDLE'), (1.0, 'STARTING'), (2.5, 'RUNNING'), (6.0, 'ESTOP'), (9.0, 'FAULT'), (12.0, 'IDLE')], dropped [(7.0, 'ESTOP', 'start'), (10.0, 'FAULT', 'start')]"
+    },
+    {
+      "name": "scenario D emergency stop: contactor never closed in FAULT or ESTOP",
+      "passed": true,
+      "detail": "violations at []"
+    }
+  ],
+  "limitations": [
+    "Idealised delay model for motor feedback; no bounce, debounce or scan jitter.",
+    "Structural checks cover the transition table only, not electrical interlocks.",
+    "Enumeration and testing, not formal model checking.",
+    "No PLC or hardware validation."
+  ],
+  "result_status": "completed",
+  "figure_references": [
+    "experiments/figures/exp_05_fsm_motor_starter/state_diagram.png",
+    "experiments/figures/exp_05_fsm_motor_starter/scenarios.png"
+  ],
+  "execution_timestamp": "2026-11-25T10:40:17+00:00",
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/03_discrete/05_fsm.ipynb"
+}

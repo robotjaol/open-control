@@ -1,0 +1,8 @@
+{
+  "name": "open-control-preview",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Static preview site for open-control. Built by tools/build_app.py; smoke-tested with jsdom.",
+  "scripts": { "test": "node tests/smoke.test.mjs" },
+  "devDependencies": { "jsdom": "^26.0.0" }
+}

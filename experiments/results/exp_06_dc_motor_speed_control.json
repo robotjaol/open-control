@@ -1,0 +1,320 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "exp_06_dc_motor_speed_control",
+  "title": "DC motor speed control: single loop vs cascade with current limit",
+  "notebook": "notebooks/04_motor_control/06_dc_motor_speed.ipynb",
+  "algorithm": "Cascade PI (current inner, speed outer) vs single-loop PI",
+  "application": "Brushed DC gear motor, illustrative",
+  "plant_model": "2nd-order DC motor (RK4)",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Simulated motor with illustrative parameters."
+  },
+  "experiment_type": "software_simulation",
+  "controller_parameters": {
+    "speed_bandwidth_hz": 20.0,
+    "current_bandwidth_hz": 150.0,
+    "current_limit_A": 3.0,
+    "speed_loop_ratio": 5
+  },
+  "plant_parameters": {
+    "R": 2.0,
+    "L": 0.003,
+    "Kt": 0.08,
+    "Ke": 0.08,
+    "J": 4e-05,
+    "B": 2e-05,
+    "Tc": 0.0,
+    "v_max": 24.0
+  },
+  "sampling_time_s": 0.0002,
+  "input_configuration": {
+    "speed_step_rad_s": 120.0
+  },
+  "disturbance_configuration": {
+    "load_step_Nm": 0.05,
+    "at_s": 0.5
+  },
+  "operating_conditions": {
+    "supply_V": 24.0,
+    "encoder_quantisation_rad_s": 1.5707963267948966,
+    "variants": [
+      "nominal",
+      "inertia x3",
+      "R x1.3",
+      "Kt, Ke x0.9"
+    ]
+  },
+  "number_of_trials": 12,
+  "random_seed": null,
+  "software_environment": {
+    "python": "3.13.18",
+    "platform": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+    "cpu_count": 2,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2",
+      "pandas": "3.0.5",
+      "control": "0.10.2"
+    }
+  },
+  "hardware_configuration": null,
+  "firmware_version": null,
+  "metrics": {
+    "current_loop": {
+      "rise_time_ms": 2.2,
+      "rise_time_theory_ms": 2.3310893998192936
+    },
+    "table": [
+      {
+        "variant": "nominal",
+        "controller": "A single-loop PI",
+        "peak_current_A": 6.3618063142247685,
+        "overshoot_percent": 0.0,
+        "settling_time_ms": 32.6,
+        "iae_setpoint": 0.9429296585513929,
+        "load_dip_rad_s": 5.224650304596409,
+        "load_recovery_ms": 23.599999999999998,
+        "ess_before_load_percent": 3.079018521627101e-13,
+        "ess_end_percent": 2.9605947323337506e-13,
+        "peak_voltage_V": 16.01963415409401
+      },
+      {
+        "variant": "nominal",
+        "controller": "B cascade",
+        "peak_current_A": 2.775654208149399,
+        "overshoot_percent": 10.721791755318932,
+        "settling_time_ms": 52.00000000000001,
+        "iae_setpoint": 1.6443470402686606,
+        "load_dip_rad_s": 4.133117065616531,
+        "load_recovery_ms": 16.400000000000002,
+        "ess_before_load_percent": 4.7369515717340014e-14,
+        "ess_end_percent": 2.3684757858670007e-14,
+        "peak_voltage_V": 14.844918243031067
+      },
+      {
+        "variant": "nominal",
+        "controller": "C cascade + back-EMF ff",
+        "peak_current_A": 3.000007661899009,
+        "overshoot_percent": 11.08802724170339,
+        "settling_time_ms": 49.2,
+        "iae_setpoint": 1.5552375055635055,
+        "load_dip_rad_s": 4.307709553532419,
+        "load_recovery_ms": 16.0,
+        "ess_before_load_percent": 2.3684757858670007e-14,
+        "ess_end_percent": 1.1842378929335004e-14,
+        "peak_voltage_V": 15.047304398231027
+      },
+      {
+        "variant": "inertia x3",
+        "controller": "A single-loop PI",
+        "peak_current_A": 8.312754286913817,
+        "overshoot_percent": 16.646507547682265,
+        "settling_time_ms": 83.60000000000001,
+        "iae_setpoint": 2.372832225666612,
+        "load_dip_rad_s": 3.8730026808597415,
+        "load_recovery_ms": 37.2,
+        "ess_before_load_percent": 2.1954183656210566e-06,
+        "ess_end_percent": 3.3441338587181235e-09,
+        "peak_voltage_V": 19.489335933509537
+      },
+      {
+        "variant": "inertia x3",
+        "controller": "B cascade",
+        "peak_current_A": 2.918228907775572,
+        "overshoot_percent": 11.118781745853944,
+        "settling_time_ms": 105.2,
+        "iae_setpoint": 4.249161908708466,
+        "load_dip_rad_s": 3.095907312367885,
+        "load_recovery_ms": 26.000000000000004,
+        "ess_before_load_percent": 1.2222711139505313e-07,
+        "ess_end_percent": 1.9922434072820275e-10,
+        "peak_voltage_V": 15.294791212008729
+      },
+      {
+        "variant": "inertia x3",
+        "controller": "C cascade + back-EMF ff",
+        "peak_current_A": 3.000001438053299,
+        "overshoot_percent": 11.224445241097003,
+        "settling_time_ms": 103.00000000000001,
+        "iae_setpoint": 4.149802242615917,
+        "load_dip_rad_s": 3.132874621415482,
+        "load_recovery_ms": 25.8,
+        "ess_before_load_percent": 3.1557926642259794e-08,
+        "ess_end_percent": 4.0112505909443524e-10,
+        "peak_voltage_V": 15.543291817484295
+      },
+      {
+        "variant": "R x1.3",
+        "controller": "A single-loop PI",
+        "peak_current_A": 5.294855398634277,
+        "overshoot_percent": 1.500070884436111,
+        "settling_time_ms": 23.400000000000002,
+        "iae_setpoint": 1.038829243420971,
+        "load_dip_rad_s": 6.108893357618584,
+        "load_recovery_ms": 30.4,
+        "ess_before_load_percent": 2.723747153747051e-13,
+        "ess_end_percent": 2.9605947323337506e-13,
+        "peak_voltage_V": 16.099208805619085
+      },
+      {
+        "variant": "R x1.3",
+        "controller": "B cascade",
+        "peak_current_A": 2.767196278249475,
+        "overshoot_percent": 11.376068059739053,
+        "settling_time_ms": 51.4,
+        "iae_setpoint": 1.6764380489707627,
+        "load_dip_rad_s": 4.310597513906146,
+        "load_recovery_ms": 16.400000000000002,
+        "ess_before_load_percent": 4.7369515717340014e-14,
+        "ess_end_percent": 1.1842378929335004e-14,
+        "peak_voltage_V": 16.37683879613917
+      },
+      {
+        "variant": "R x1.3",
+        "controller": "C cascade + back-EMF ff",
+        "peak_current_A": 2.9998469512904773,
+        "overshoot_percent": 11.907247067280636,
+        "settling_time_ms": 48.400000000000006,
+        "iae_setpoint": 1.5901117639223183,
+        "load_dip_rad_s": 4.48712086705055,
+        "load_recovery_ms": 15.8,
+        "ess_before_load_percent": 0.0,
+        "ess_end_percent": 1.1842378929335004e-14,
+        "peak_voltage_V": 17.031765778449724
+      },
+      {
+        "variant": "Kt, Ke x0.9",
+        "controller": "A single-loop PI",
+        "peak_current_A": 6.588552711827788,
+        "overshoot_percent": 0.880445159029275,
+        "settling_time_ms": 20.0,
+        "iae_setpoint": 0.8969920334875388,
+        "load_dip_rad_s": 5.77429084986872,
+        "load_recovery_ms": 26.200000000000003,
+        "ess_before_load_percent": 2.9605947323337506e-13,
+        "ess_end_percent": 2.9605947323337506e-13,
+        "peak_voltage_V": 16.11952953038903
+      },
+      {
+        "variant": "Kt, Ke x0.9",
+        "controller": "B cascade",
+        "peak_current_A": 2.8117355984664734,
+        "overshoot_percent": 10.928585755753662,
+        "settling_time_ms": 54.800000000000004,
+        "iae_setpoint": 1.7830969986003764,
+        "load_dip_rad_s": 4.478504138935634,
+        "load_recovery_ms": 18.4,
+        "ess_before_load_percent": 1.0658141036401503e-13,
+        "ess_end_percent": 4.7369515717340014e-14,
+        "peak_voltage_V": 13.979534138095659
+      },
+      {
+        "variant": "Kt, Ke x0.9",
+        "controller": "C cascade + back-EMF ff",
+        "peak_current_A": 3.0229212508248633,
+        "overshoot_percent": 11.23589617539933,
+        "settling_time_ms": 52.2,
+        "iae_setpoint": 1.693353950973419,
+        "load_dip_rad_s": 4.64638968554479,
+        "load_recovery_ms": 18.000000000000004,
+        "ess_before_load_percent": 8.289665250534502e-14,
+        "ess_end_percent": 8.289665250534502e-14,
+        "peak_voltage_V": 14.198574943894133
+      }
+    ],
+    "quantisation_ripple": {
+      "A single-loop PI": {
+        "true_speed_ripple_pp_percent": 0.04287369435323706,
+        "current_ripple_pp_A": 0.05286245790921462
+      },
+      "B cascade": {
+        "true_speed_ripple_pp_percent": 0.3512721928292098,
+        "current_ripple_pp_A": 0.18379502294520267
+      },
+      "C cascade + back-EMF ff": {
+        "true_speed_ripple_pp_percent": 0.3984969952683932,
+        "current_ripple_pp_A": 0.22239410833842907
+      }
+    }
+  },
+  "baseline": null,
+  "checks": [
+    {
+      "name": "open-loop step matches scipy exact step (max error / final)",
+      "passed": true,
+      "detail": "4.13e-10"
+    },
+    {
+      "name": "steady-state speed equals (Kt v - R Tl)/(RB + Kt Ke)",
+      "passed": true,
+      "detail": "133.540 vs 133.540"
+    },
+    {
+      "name": "steady-state current equals (Tl + B w)/Kt",
+      "passed": true,
+      "detail": "0.6584 vs 0.6584"
+    },
+    {
+      "name": "TF poles equal state-matrix eigenvalues",
+      "passed": true,
+      "detail": "[-573.60661056  -93.56005611]"
+    },
+    {
+      "name": "current-loop 10-90% rise time within 20% of 2.197/wc",
+      "passed": true,
+      "detail": "2.20 ms vs 2.33 ms"
+    },
+    {
+      "name": "single loop draws more than 2x the current limit on the speed step",
+      "passed": true,
+      "detail": "6.36 A vs limit 3.0 A"
+    },
+    {
+      "name": "B cascade: current stays within 10% of the limit (nominal)",
+      "passed": true,
+      "detail": "2.78 A"
+    },
+    {
+      "name": "C cascade + back-EMF ff: current stays within 10% of the limit (nominal)",
+      "passed": true,
+      "detail": "3.00 A"
+    },
+    {
+      "name": "A single-loop PI: zero steady-state error before and after load (nominal)",
+      "passed": true,
+      "detail": "0.000 %, 0.000 %"
+    },
+    {
+      "name": "B cascade: zero steady-state error before and after load (nominal)",
+      "passed": true,
+      "detail": "0.000 %, 0.000 %"
+    },
+    {
+      "name": "C cascade + back-EMF ff: zero steady-state error before and after load (nominal)",
+      "passed": true,
+      "detail": "0.000 %, 0.000 %"
+    },
+    {
+      "name": "cascade steady current equals (Tl + B w)/Kt",
+      "passed": true,
+      "detail": "0.6550 vs 0.6550 A"
+    }
+  ],
+  "limitations": [
+    "Illustrative motor parameters, not identified.",
+    "No inverter, PWM, dead time or supply sag.",
+    "Ideal current sensor; quantisation modelled as a fixed speed step.",
+    "Parameter variants one at a time.",
+    "No hardware validation."
+  ],
+  "result_status": "completed",
+  "figure_references": [
+    "experiments/figures/exp_06_dc_motor_speed_control/nominal_step_and_load.png",
+    "experiments/figures/exp_06_dc_motor_speed_control/startup_current_and_variants.png"
+  ],
+  "execution_timestamp": "2026-11-25T10:40:27+00:00",
+  "reproducibility_instructions": "pip install -e .[development]; python tools/run_notebooks.py notebooks/04_motor_control/06_dc_motor_speed.ipynb"
+}

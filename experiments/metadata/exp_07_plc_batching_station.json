@@ -1,0 +1,168 @@
+{
+  "experiment_id": "exp_07_plc_batching_station",
+  "title": "PLC scan-cycle emulation: batching station",
+  "notebook": "notebooks/03_discrete/07_plc_sequence.ipynb",
+  "notebook_id": "07_plc_sequence",
+  "algorithm": "IEC 61131-3 style function blocks in a scan-cycle emulation",
+  "application": "Bottle batching station (illustrative)",
+  "plant_model": "Scripted discrete inputs; no plant dynamics",
+  "category": "Sequential and PLC",
+  "difficulty": "Intermediate",
+  "roadmap_level": 2,
+  "lab": "plc",
+  "experiment_type": "software_simulation",
+  "dataset": {
+    "name": "none",
+    "kind": "simulated",
+    "description": "Scripted sensor pulses and seeded random pulse phases."
+  },
+  "references": [
+    {
+      "key": "moore1956",
+      "kind": "reference",
+      "status": "verified"
+    },
+    {
+      "key": "iec61131_3",
+      "kind": "standard",
+      "status": "verified"
+    }
+  ],
+  "status": {
+    "content": "Complete (15/15 sections)",
+    "software": "Executed from a clean kernel; local unit tests passed at build time; GitHub Actions has not been run on this repository",
+    "research": "2 verified, 0 partial",
+    "simulation": "23/23 checks passed (completed)",
+    "hardware": "Not validated"
+  },
+  "figures": [
+    "experiments/figures/exp_07_plc_batching_station/scenario_normal_batch.png",
+    "experiments/figures/exp_07_plc_batching_station/scan_time_effects.png"
+  ],
+  "limitations": [
+    "Emulation of the scan model, not a PLC runtime and not compliance-tested.",
+    "Function-block behaviour verified against hand-derived timing, not the standard text.",
+    "No input filters, output delay, interrupts or multi-task scheduling.",
+    "No safety function; mechanical dynamics not modelled.",
+    "No hardware validation."
+  ],
+  "checks": [
+    {
+      "name": "TON PT=2.0 s, dt=0.1: Q true from scan 24 (delay 20 scans) to scan 40, false at 41",
+      "passed": true,
+      "detail": "first true scan 24"
+    },
+    {
+      "name": "TOF PT=1.0 s, dt=0.1: Q true scans 5..23, false from 24",
+      "passed": true,
+      "detail": "true scans 5..23"
+    },
+    {
+      "name": "R_TRIG true for exactly one scan per rising edge",
+      "passed": true,
+      "detail": "[False, True, False, False, False, True]"
+    },
+    {
+      "name": "F_TRIG true for exactly one scan per falling edge",
+      "passed": true,
+      "detail": "[False, False, True, False, False, True]"
+    },
+    {
+      "name": "CTU counts rising edges only (held input counts once), Q at 3",
+      "passed": true,
+      "detail": "cv=3, q=[False, False, False, False, False, False, True, True, True]"
+    },
+    {
+      "name": "CTU reset has priority and the input edge during reset is not counted twice",
+      "passed": true,
+      "detail": "cv=1"
+    },
+    {
+      "name": "reset-dominant latch: set holds, simultaneous set and reset gives false",
+      "passed": true,
+      "detail": "[True, True, False, False]"
+    },
+    {
+      "name": "TON delay for PT=0.25 s at scan 10 ms equals ceil(PT/dt)*dt",
+      "passed": true,
+      "detail": "0.250 s vs 0.250 s"
+    },
+    {
+      "name": "TON delay for PT=0.25 s at scan 25 ms equals ceil(PT/dt)*dt",
+      "passed": true,
+      "detail": "0.250 s vs 0.250 s"
+    },
+    {
+      "name": "TON delay for PT=0.25 s at scan 50 ms equals ceil(PT/dt)*dt",
+      "passed": true,
+      "detail": "0.250 s vs 0.250 s"
+    },
+    {
+      "name": "TON delay for PT=0.25 s at scan 100 ms equals ceil(PT/dt)*dt",
+      "passed": true,
+      "detail": "0.300 s vs 0.300 s"
+    },
+    {
+      "name": "TON delay for PT=0.25 s at scan 200 ms equals ceil(PT/dt)*dt",
+      "passed": true,
+      "detail": "0.400 s vs 0.400 s"
+    },
+    {
+      "name": "S1 conveyor runs from scan 50 to 699, stops at 700 (6th edge), restarts at 999",
+      "passed": true,
+      "detail": "50..699, then 999..1199"
+    },
+    {
+      "name": "S1 packer on for exactly 200 scans, 799..998 (1.0 s settle, 2.0 s pack)",
+      "passed": true,
+      "detail": "799..998 (200 scans)"
+    },
+    {
+      "name": "S1 batch_full from scan 700 to 998; count reset at 999",
+      "passed": true,
+      "detail": "count@998=6, @999=0"
+    },
+    {
+      "name": "S1 conveyor off in the same scan as the 6th rising edge (stop latency <= 1 scan)",
+      "passed": true,
+      "detail": "699 on, 700 off"
+    },
+    {
+      "name": "S2 e-stop in the pack cycle: packer 799..849, off 850..899, restarts 900 for a fresh 200 scans (900..1099)",
+      "passed": true,
+      "detail": "799..849, 900..1099"
+    },
+    {
+      "name": "S2 e-stop clears run at scan 850; run and conveyor stay off through the end of the cycle until a new start at scan 1250",
+      "passed": true,
+      "detail": "run 50..849 then 1250..1499; conveyor off 700..1249"
+    },
+    {
+      "name": "S3 simultaneous start and stop gives no run (scans 100..109); NC wire break at 350..399 stops run; stays off until start at 500",
+      "passed": true,
+      "detail": "200..349, 500..799"
+    },
+    {
+      "name": "all six 50 ms pulses counted at scan 10 ms: measured vs min(1,w/T)^6",
+      "passed": true,
+      "detail": "1.0000 vs 1.0000 (tolerance 0.0025)"
+    },
+    {
+      "name": "all six 50 ms pulses counted at scan 50 ms: measured vs min(1,w/T)^6",
+      "passed": true,
+      "detail": "1.0000 vs 1.0000 (tolerance 0.0025)"
+    },
+    {
+      "name": "all six 50 ms pulses counted at scan 100 ms: measured vs min(1,w/T)^6",
+      "passed": true,
+      "detail": "0.0150 vs 0.0156 (tolerance 0.0273)"
+    },
+    {
+      "name": "all six 50 ms pulses counted at scan 200 ms: measured vs min(1,w/T)^6",
+      "passed": true,
+      "detail": "0.0000 vs 0.0002 (tolerance 0.0056)"
+    }
+  ],
+  "execution_timestamp": "2026-11-25T10:40:32+00:00",
+  "result_file": "experiments/results/exp_07_plc_batching_station.json"
+}
